@@ -1,9 +1,10 @@
 function isTouching(x0, y0, w0, h0, x1, y1, w1, h1){ // this could also be used for box colisions i guess
   return (x0 + w0 >= x1 && 
-          x0 <= x1 + h1 &&
+          x0 <= x1 + w1 &&
           y0 + h0 >= y1 &&
           y0 <= y1 + h1)
 }
+sources.touchingFunction = isTouching;
 sources.buttonClass = class{
   constructor(text,x,y,width,height, guiMenu) {
     [this.text, this.x, this.y, this.width, this.height, this.guiMenu]=[text,x,y,width,height, guiMenu];
@@ -23,6 +24,7 @@ sources.buttonClass = class{
     return isTouching(this.x, this.y, this.width, this.height, cursorX, cursorY, 1, 1);
   }
   update(cursorX,cursorY,clicking){
+    if (this.guiMenu != game.menu) return;
     if(clicking&&this.isButtonTouching(cursorX,cursorY)&&!this.currentlyClicking){
       this.currentlyClicking=true;
       if(this.hasOnclick)this.onclick();
@@ -40,7 +42,10 @@ sources.interfaceClass = class{
     this.cursorY=0;
     this.clicking=false;
     cnv.addEventListener("mousemove",(e)=>{
-      [this.cursorX,this.cursorY]=[e.clientX,e.clientY]; // change "client" if smth buggy
+      let clientX=e.clientX/cnv.getBoundingClientRect().width*1152;
+      let clientY=e.clientY/cnv.getBoundingClientRect().height*864;
+      
+      [this.cursorX,this.cursorY]=[clientX,clientY]; // change "client" if smth buggy
     });
     cnv.addEventListener("mousedown",(e)=>{
       this.clicking=true;

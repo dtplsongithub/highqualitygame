@@ -2,20 +2,40 @@ to do
 
 gameplay
 
-- movement (should be pretty easy)
-- platforms
-- legs
-- leaderboard
+v movement (should be pretty easy)
+v platforms:
+  - that kill you
+  - that grant you powerups
+  v that do nothing
+  - that dont collide with you :troll:
+  - that make you jump higher
+v collision
+? leaderboard:
+  v leaderboard itself
+  - leg leaderboard -------------------
+  - show in what place i am            | 
+  - show which players got eliminated  |
+  v leaderboard easing                 |
+- legs:     <----------------- make this first
+  - get leg from position(?)
+  - leg separation
+  - new leg event
+  - elimination
+- player elimination
 - win + lose screen
-- ai
+? ai
 - powerups
 - timer (should be pretty easy)
 - spectator mode
-- MULTIPLAYER (the hardest part)
+v player arrows
+- sound effects
+- background music
+
+- MULTIPLAYER
 
 other game related stuff
 
-- title screen
+? title screen
 - about screen
 - credits screen
 - settings:
@@ -27,4 +47,12 @@ other game related stuff
 
 other
 
-- make the code readable (im talking to myself rn)
+v make the code readable (im talking to myself rn)
+
+bugs
+
+- sometimes you cant see the player because it goes too much on the left/right
+
+v - complete
+? - partially complete
+- - incomplete
