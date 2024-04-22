@@ -3,13 +3,14 @@ html {
   width: 100%;
 }
 
-body{
-  background:black;
+body {
+  background: black;
+  color: white;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-div#logs{
-  color:white;
-  font-family:monospace;
-  height:100%;
-  width:100%;
+div#logs {
+  font-family: monospace;
+  height: 100%;
+  width: 100%;
 }

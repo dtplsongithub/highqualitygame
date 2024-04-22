@@ -1,0 +1,30 @@
+to do
+
+gameplay
+
+- movement (should be pretty easy)
+- platforms
+- legs
+- leaderboard
+- win + lose screen
+- ai
+- powerups
+- timer (should be pretty easy)
+- spectator mode
+- MULTIPLAYER (the hardest part)
+
+other game related stuff
+
+- title screen
+- about screen
+- credits screen
+- settings:
+  - fps changer
+  - difficulty chooser
+  - color chooser
+  - show faces?
+  - other i forgor
+
+other
+
+- make the code readable (im talking to myself rn)
