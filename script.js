@@ -6,10 +6,11 @@ class Logs{
   log(text){
     this.thisNode.innerText+="\n"+text;
   }
-  error(text){ // ok
-    // well when im done with this you commit
+  error(text){
     let errElem=d.createElement("span");
     errElem.innerText=text;
+    errElem.style.backgroundColor="red";
+    this.thisNode.appendChild(d.createElement("div"));
     this.thisNode.appendChild(errElem);
   }
 }
@@ -35,7 +36,7 @@ class Loader{
 let log=new Logs();
 let loader=new Loader(log);
 let sources={};
-loader.loadMultiple(["js/player.js","js/playerList.js","js/keyboard.js","js/settings.js","js/game.js","js/main.js"],(loaded)=>{
+loader.loadMultiple(["js/render.js","js/player.js","js/playerList.js","js/keyboard.js","js/settings.js","js/game.js","js/main.js"],(loaded)=>{
   log.log("converting scripts to functions");
   let funcs=[];
   for(e in loaded){funcs.push(new Function("sources",loaded[e]))}
@@ -44,7 +45,7 @@ loader.loadMultiple(["js/player.js","js/playerList.js","js/keyboard.js","js/sett
     try{
       funcs[f](sources);
     } catch (e) {
-      log.error("an error has occured at function "+f+"\n"+(e.stack?e.stack:e));
+      log.error("an error has occured at function "+f+"\n"+e.message+"\n"+(e.stack?e.stack:e));
     }
   };
 })

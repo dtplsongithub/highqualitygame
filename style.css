@@ -1,16 +1,22 @@
-html {
-  height: 100%;
-  width: 100%;
+html, body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  float: left;
 }
 
 body {
-  background: black;
+  background: #111;
   color: white;
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 div#logs {
   font-family: monospace;
-  height: 100%;
-  width: 100%;
+  display: inline;
+}
+
+canvas#mainCanvas{
+  max-width:100vw;
+  max-height:100vh;
 }
