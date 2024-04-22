@@ -36,7 +36,7 @@ class Loader{
 let log=new Logs();
 let loader=new Loader(log);
 let sources={};
-loader.loadMultiple(["js/render.js","js/player.js","js/playerList.js","js/keyboard.js","js/settings.js","js/game.js","js/main.js"],(loaded)=>{
+loader.loadMultiple(["js/render.js","js/player.js","js/playerList.js","js/keyboard.js","js/settings.js","js/game.js", "js/interface.js", "js/main.js"],(loaded)=>{
   log.log("converting scripts to functions");
   let funcs=[];
   for(e in loaded){funcs.push(new Function("sources",loaded[e]))}
