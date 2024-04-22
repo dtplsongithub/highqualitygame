@@ -80,19 +80,20 @@ sources.rendererClass = class{
       this.ctx.fillRect(platform.x+600/2,(this.cameraY-(i+1)*120)+this.canvas.height/2,platform.width,platform.height);
     }
   }
-  renderLeg(game){
-    this.ctx.fillStyle="#000";
-    this.ctx.fillRect(0,300-(this.cameraY%300),1000,10); // lower than usual for testing
+  renderLeg(){
+    this.ctx.fillStyle="#888";
+    this.ctx.fillRect(0,((this.cameraY+this.canvas.height/2)%3000),1000,10);
   }
   renderGame(game){
     if(game.playerList.currentList[0].eliminated){
-      this.cameraY+=(game.playerList.sort((a,b)=>b.y-a.y).currentList[0].y-this.cameraY)/30
+      this.cameraY+=(game.playerList.currentList.filter((a)=>!a.eliminated).map((a)=>a.y).sort((a,b)=>b-a)[0]-this.cameraY)/30
     } else {
       this.cameraY+=(game.playerList.currentList[0].y-this.cameraY)/30;
     }
     this.renderBackground();
     this.renderPlayers(game)
     this.renderPlatforms(game);
+    this.renderLeg();
     game.leaderboard.render(this.ctx);
   }
   render(game){

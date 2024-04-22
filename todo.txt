@@ -12,21 +12,21 @@ v platforms:
 v collision
 ? leaderboard:
   v leaderboard itself
-  - leg leaderboard -------------------
-  - show in what place i am            | 
-  - show which players got eliminated  |
-  v leaderboard easing                 |
-- legs:     <----------------- make this first
-  - get leg from position(?)
-  - leg separation
+  v leg leaderboard
+  v show in what place i am
+  v show which players got eliminated
+  v leaderboard easing
+v legs:
+  v get leg from position(?)
+  v leg separation
   - new leg event
-  - elimination
-- player elimination
+  v elimination
+v player elimination
 - win + lose screen
-? ai
+v ai
 - powerups
 - timer (should be pretty easy)
-- spectator mode
+v spectator mode
 v player arrows
 - sound effects
 - background music
@@ -51,7 +51,7 @@ v make the code readable (im talking to myself rn)
 
 bugs
 
-- sometimes you cant see the player because it goes too much on the left/right
+? sometimes you cant see the player because it goes too much on the left/right
 
 v - complete
 ? - partially complete

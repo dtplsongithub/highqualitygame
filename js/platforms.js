@@ -23,7 +23,7 @@ sources.platformList = class{
     }
   }
   addPlatform(){
-    this.currentList.push(new sources.platformsClass(M.random()*600-300,M.random()*200+50,30,0));
+    this.currentList.push(new sources.platformsClass(M.random()*500-300,M.random()*200+50,30,0));
   }
   touchingPlatform(player){ // also i was thinking this could be in player but ok
     for(let i=0;i<this.currentList.length;i++){
