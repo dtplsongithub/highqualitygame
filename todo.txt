@@ -9,8 +9,9 @@ v platforms:
   v that do nothing
   - that dont collide with you :troll:
   - that make you jump higher
+  - that move
 v collision
-? leaderboard:
+v leaderboard:
   v leaderboard itself
   v leg leaderboard
   v show in what place i am
@@ -19,10 +20,9 @@ v collision
 v legs:
   v get leg from position(?)
   v leg separation
-  - new leg event
   v elimination
 v player elimination
-- win + lose screen
+v win + lose screen
 v ai
 - powerups
 - timer (should be pretty easy)
@@ -30,6 +30,7 @@ v spectator mode
 v player arrows
 - sound effects
 - background music
+v spectator mode
 
 - MULTIPLAYER
 

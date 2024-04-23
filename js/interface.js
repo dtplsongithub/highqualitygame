@@ -24,7 +24,7 @@ sources.buttonClass = class{
     return isTouching(this.x, this.y, this.width, this.height, cursorX, cursorY, 1, 1);
   }
   update(cursorX,cursorY,clicking){
-    if (this.guiMenu != game.menu) return;
+    if (this.guiMenu != game.menu&&this.guiMenu!="popup") return;
     if(clicking&&this.isButtonTouching(cursorX,cursorY)&&!this.currentlyClicking){
       this.currentlyClicking=true;
       if(this.hasOnclick)this.onclick();
@@ -55,6 +55,7 @@ sources.interfaceClass = class{
     });
   }
   addButton(button){
+    // console.log("added button ",button);
     this.buttonList.push(button);
   }
   update(){

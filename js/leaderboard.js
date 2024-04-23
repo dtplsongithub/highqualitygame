@@ -30,9 +30,9 @@ sources.leaderboardClass = class{
   }
   getPlaceRepresentation(idx){
     idx++;
-    return idx.toString(10)+["th","st","nd","rd","th","th","th","th","th","th"][idx%10];
+    return idx.toString(10)+["th","st","nd","rd","th","th","th","th","th","th"][M.floor(idx/10)%10==1?0:(idx%10)];
   }
-  render(ctx){
+  render(ctx,game){
     ctx.textAlign="left";
     ctx.fillStyle="#fff";
     ctx.fillRect(600, 0, 1152-600, 864);
@@ -48,7 +48,7 @@ sources.leaderboardClass = class{
       ctx.font="24px Arial";
       ctx.fillText(player.color,710+player.x,50+player.y);
       ctx.font="16px Arial";
-      ctx.fillText((player.obj.y+0).toFixed(1)+" cm",710+player.x,70+player.y);
+      ctx.fillText(player.obj.y+" cm",710+player.x,70+player.y);
       ctx.fillText("leg "+player.obj.currentLeg,710+player.x,90+player.y);
     };
 
@@ -76,6 +76,36 @@ sources.leaderboardClass = class{
         ctx.lineTo(ctx.canvas.width-120,ctx.canvas.height-50);
         ctx.fill();
       }
+    }
+
+    ctx.font="24px Arial";
+    ctx.textAlign="right";
+    ctx.fillText(Date.now()-game.timeStart,ctx.canvas.width-20,ctx.canvas.height-20);
+    ctx.textAlign="left";
+  }
+  renderPopup(ctx,lost){
+    if(lost){
+      ctx.font="32px Arial";
+      ctx.textAlign="center";
+      ctx.fillText(`you got eliminated at ${this.getPlaceRepresentation(this.findHostIdx())} place`,ctx.canvas.width/2,180);
+    }
+    ctx.textAlign="left";
+    let players = this.getSortedPlayers();
+    for(let i=0;i<3;i++){
+      let player = players[i];
+      ctx.fillStyle=player.color;
+      ctx.fillRect(110,500+i*80,60,60);
+      ctx.font="32px Arial";
+      ctx.fillText(player.color,180,520+i*80);
+      ctx.font="24px Arial";
+      ctx.fillText((player.y+0).toFixed(1)+" cm",180,550+i*80);
+      ctx.fillText("leg "+player.currentLeg,180,570+i*80);
+    }
+    for(let i=0;i<players.length-3;i++){
+      let player = players[i+3];
+      ctx.fillStyle=player.color;
+      ctx.fillRect(500+M.floor(i/10)*200,190+(i%10)*60,40,40);
+      ctx.fillText((player.y+0).toFixed(1)+" cm",550+M.floor(i/10)*200,220+(i%10)*60);
     }
   }
 }

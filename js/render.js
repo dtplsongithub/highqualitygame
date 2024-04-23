@@ -9,6 +9,10 @@ sources.rendererClass = class{
     node.appendChild(this.canvas);
     this.cameraY=0;
     this.interface = new sources.interfaceClass(this.canvas);
+    this.popupList = {
+      "win":new sources.popupClass("You won!",(ctx)=>{game.leaderboard.renderPopup(ctx,false);},()=>{game.menu="title"},1000,700,this.interface),
+      "lost":new sources.popupClass("You lost",(ctx)=>{game.leaderboard.renderPopup(ctx,true);},()=>{game.menu="title"},1000,700,this.interface)
+    };
     this.onerror=onerror;
   }
   renderTitlescreen(){
@@ -25,7 +29,7 @@ sources.rendererClass = class{
     this.ctx.textAlign="left";
   }
   renderButton(btn) {
-    if (btn.guiMenu == game.menu) {
+    if (btn.guiMenu == game.menu||btn.guiMenu=="popup") {
       this.ctx.font="20px Arial";
       this.ctx.fillStyle="#fff";
       this.ctx.fillRect(btn.x,btn.y,btn.width,btn.height);
@@ -94,7 +98,13 @@ sources.rendererClass = class{
     this.renderPlayers(game)
     this.renderPlatforms(game);
     this.renderLeg();
-    game.leaderboard.render(this.ctx);
+    game.leaderboard.render(this.ctx,game);
+  }
+  renderPopups(){
+    for(let i in Object.keys(this.popupList)){
+      //console.log(i);
+      this.popupList[Object.keys(this.popupList)[i]].render(this.ctx);
+    }
   }
   render(game){
     this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
@@ -102,6 +112,8 @@ sources.rendererClass = class{
       this.interface.update();
       if(game.menu=="title") this.renderTitlescreen();
       if(game.menu=="game") this.renderGame(game);
+      if(game.menu=="popup") this.renderBackground();
+      this.renderPopups();
       this.renderButtons();
       requestAnimationFrame(()=>{this.render(game)});
     } catch(e) {
