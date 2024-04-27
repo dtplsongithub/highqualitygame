@@ -17,12 +17,12 @@ sources.playerListClass = class{
     }
     this.currentList=playerList;
   }
-  update(x,y,platformList,usePowerup){
+  update(x,y,platformList,usePowerup,game){
     for(let i=0;i<this.currentList.length;i++){
       if(this.currentList[i].isHost){
-        this.currentList[i].update(x,y,false,platformList,this.currentList,this.powerupClass,usePowerup);
+        this.currentList[i].update(x,y,false,platformList,this.currentList,this.powerupClass,usePowerup,game)
       } else {
-        this.currentList[i].update(0,0,true,platformList,this.currentList,this.powerupClass,false);
+        this.currentList[i].update(0,0,true,platformList,this.currentList,this.powerupClass,false,game);
       }
     }
   }

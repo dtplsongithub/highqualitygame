@@ -112,6 +112,27 @@ sources.rendererClass = class{
     let pwlist=game.powerupList.powerupList;
     pwlist.forEach((a)=>{a.render(this.ctx);})
   }
+  renderStartCountdown(game){
+    if(!(game.timeStart>Date.now()-1000)){return;}
+    let animTimer=1-(((game.timeStart-(Date.now()-1000))/1000)%1);
+    this.ctx.textAlign="center";
+    this.ctx.font="bold italic 72px Arial";
+    this.ctx.translate(300,this.canvas.height/2);
+    this.ctx.scale(2+animTimer/5,2+animTimer/5);
+    let squash=M.min(((M.max(0.1-animTimer,0)+M.max(animTimer-0.9,0))**2)*100,1);
+    this.ctx.scale(1+squash*2,1-squash)
+    this.ctx.translate(-300,-this.canvas.height/2);
+    this.ctx.textBaseline="middle";
+    this.ctx.globalAlpha=1-squash;
+    this.ctx.fillStyle="hsl(49deg,87%,"+M.max(100-(animTimer**.5)*80,50)+"%)";
+    let timeShow=M.ceil((game.timeStart-Date.now())/1000).toString();
+    if(timeShow=="0"){timeShow="GO!"}
+    this.ctx.fillText(timeShow,300,this.canvas.height/2);
+    this.ctx.globalAlpha=1;
+    this.ctx.textBaseline="alphabetic";
+    this.ctx.resetTransform();
+    this.ctx.textAlign="left";
+  }
   renderGame(game){
     if(game.playerList.currentList[0].eliminated){
       this.cameraY+=(game.playerList.currentList.filter((a)=>!a.eliminated).map((a)=>a.y).sort((a,b)=>b-a)[0]-this.cameraY)/30
@@ -122,8 +143,9 @@ sources.rendererClass = class{
     this.renderPlayers(game)
     this.renderPlatforms(game);
     this.renderLeg();
-    game.leaderboard.render(this.ctx,game);
     this.renderPowerups(game);
+    game.leaderboard.render(this.ctx,game);
+    this.renderStartCountdown(game);
   }
   renderPopups(game){
     for(let i in Object.keys(this.popupList)){

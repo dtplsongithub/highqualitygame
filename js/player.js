@@ -52,7 +52,7 @@ sources.playerClass = class{
     let platformX=platform.x+platform.width/2;
     return (platformX-this.x)/2
   }
-  update(vx, vy, ai, platformList,list,pwc,usePowerup){
+  update(vx, vy, ai, platformList,list,pwc,usePowerup,game){
     this.powerupClass=pwc;
     this.playerList=list;
     if((!this.eliminated)&&(!this.freezed)){
@@ -98,7 +98,7 @@ sources.playerClass = class{
       this.y+=this.vy;
       if(this.x<-300){this.x=-300;}
       if(this.x>300){this.x=300;}
-      if(this.y<0||(platformList.touchingPlatform(this)&&this.vy<0)){
+      if(this.y<0||(platformList.touchingPlatform(this)&&this.vy<0&&(!(game.timeStart>Date.now())))){
         this.aiObjectivePlatform=this.getObjectivePlatformAI(platformList)
         this.vy=this.bounceVY;
       }

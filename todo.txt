@@ -26,7 +26,7 @@ v win + lose screen
 v ai
 - powerups:
   v show current powerup
-  ? add a button (or key) for using the powerup
+  v add a button (or key) for using the powerup
   v booster (makes your speed higher)
   v teleporter (makes you teleport to a random player, no you cant choose it)
   v freezer (upon used, the highest player will be frozen for 5 seconds.)
@@ -37,6 +37,8 @@ v player arrows
 - sound effects
 - background music
 v spectator mode
+- text showing what happened, like notifications
+- timer counting from 3 to 1 before game starts
 
 - MULTIPLAYER:
   - node.js socket.io server

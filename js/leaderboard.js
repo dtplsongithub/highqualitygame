@@ -69,6 +69,7 @@ sources.leaderboardClass = class{
         ctx.textAlign="center";
         ctx.fillText((player.obj.freezeTime/60).toFixed(2)+"s",660+player.x,60+player.y);
         ctx.textAlign="left";
+        ctx.fillStyle=player.color;
       } else {
         ctx.fillRect(630+player.x,30+player.y,60,60);
       }

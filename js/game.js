@@ -17,7 +17,7 @@ sources.gameClass = class{
     this.playerList.assignPowerupClass(this.powerupList);
     this.platformList.makeRandom();
     this.leaderboard = new sources.leaderboardClass(this.playerList);
-    this.timeStart=Date.now();
+    this.timeStart=Date.now()+3000;
   }
   update(){
     if(this.menu=="game"){
@@ -25,7 +25,7 @@ sources.gameClass = class{
       //let horizontal=this.keyboard.hasKey(true,keys.right,"key")-this.keyboard.hasKey(true,keys.left,"key");
       let horizontal=sources.keyboard.includes(keys.right)-sources.keyboard.includes(keys.left);
       this.platformList.update();
-      this.playerList.update(horizontal,0,this.platformList,sources.keyboard.includes(keys.powerup));
+      this.playerList.update(horizontal,0,this.platformList,sources.keyboard.includes(keys.powerup),this);
       this.powerupList.update();
       if(this.playerList.currentList.filter((a)=>!a.eliminated).length==1){
         this.gameTime=Date.now();
