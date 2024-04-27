@@ -31,11 +31,13 @@ sources.keyboard = [];
 d.addEventListener("keydown",(e)=>{
   if(!sources.keyboard.includes(e.keyCode)){
     sources.keyboard.push(e.keyCode)
+    if(sources.keyboard.onStart){sources.keyboard.onStart(e.keyCode)}
   }
 })
 
 d.addEventListener("keyup",(e)=>{
   if(sources.keyboard.includes(e.keyCode)){
     sources.keyboard.splice(sources.keyboard.indexOf(e.keyCode), 1);
+    if(sources.keyboard.onEnd){sources.keyboard.onEnd(e.keyCode)}
   }
 })

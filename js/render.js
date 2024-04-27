@@ -10,8 +10,9 @@ sources.rendererClass = class{
     this.cameraY=0;
     this.interface = new sources.interfaceClass(this.canvas);
     this.popupList = {
-      "win":new sources.popupClass("You won!",(ctx,game)=>{game.leaderboard.renderPopup(ctx,false,game);},()=>{game.menu="title"},1000,700,this.interface),
-      "lost":new sources.popupClass("You lost",(ctx,game)=>{game.leaderboard.renderPopup(ctx,true,game);},()=>{game.menu="title"},1000,700,this.interface)
+      "win":new sources.popupClass("You won!",(ctx,game)=>{game.leaderboard.renderPopup(ctx,false,game);},()=>{game.menu="title"},1000,700,this.interface,[]),
+      "lost":new sources.popupClass("You lost",(ctx,game)=>{game.leaderboard.renderPopup(ctx,true,game);},()=>{game.menu="title"},1000,700,this.interface,[]),
+      "settings":game.settings.getPopup(this.interface)
     };
     this.onerror=onerror;
   }

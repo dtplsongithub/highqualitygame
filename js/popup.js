@@ -1,7 +1,9 @@
 sources.popupClass = class{
-  constructor(title,render,onclose,width,height,interfaceElement){
-    [this.title,this.width,this.height,this.contentRender,this.onclose,this.interface]=[title,width,height,render,onclose,interfaceElement];
+  constructor(title,render,onclose,width,height,interfaceElement,buttons){
+    [this.title,this.width,this.height,this.contentRender,this.onclose,this.interface,this.buttons]=[title,width,height,render,onclose,interfaceElement,buttons];
     this.toRender=false;
+    this.closeButton=new sources.buttonClass("Close",1152/2+this.width/2-100,864/2+this.height/2-35,100,35, "popup");
+    this.closeButton.setClickEvent(()=>{this.close();this.onclose();});
   }
   render(ctx,game){
     if(this.toRender){
@@ -16,14 +18,20 @@ sources.popupClass = class{
     }
   }
   open(){
-    let btn=new sources.buttonClass("Close",1152/2+this.width/2-100,864/2+this.height/2-35,100,35, "popup");
-    btn.setClickEvent(()=>{this.close();this.onclose();});
-    this.interface.addButton(btn);
+    console.log(this.interface);
+    this.interface.addButton(this.closeButton);
+    for(let i=0;i<this.buttons.length;i++){
+      this.interface.addButton(this.buttons[i]);
+    }
     this.toRender=true;
   }
   close(){
-    let btnidx = this.interface.buttonList.indexOf(this.interface.buttonList.filter((a)=>a.name=="Close"));
+    let btnidx = this.interface.buttonList.indexOf(this.closeButton);
     this.interface.buttonList.splice(btnidx,1);
+    for(let i=0;i<this.buttons.length;i++){
+      let btnidx = this.interface.buttonList.indexOf(this.buttons[i]);
+      this.interface.buttonList.splice(btnidx,1);
+    }
     this.toRender=false;
   }
 }
