@@ -10,8 +10,8 @@ sources.rendererClass = class{
     this.cameraY=0;
     this.interface = new sources.interfaceClass(this.canvas);
     this.popupList = {
-      "win":new sources.popupClass("You won!",(ctx)=>{game.leaderboard.renderPopup(ctx,false);},()=>{game.menu="title"},1000,700,this.interface),
-      "lost":new sources.popupClass("You lost",(ctx)=>{game.leaderboard.renderPopup(ctx,true);},()=>{game.menu="title"},1000,700,this.interface)
+      "win":new sources.popupClass("You won!",(ctx,game)=>{game.leaderboard.renderPopup(ctx,false,game);},()=>{game.menu="title"},1000,700,this.interface),
+      "lost":new sources.popupClass("You lost",(ctx,game)=>{game.leaderboard.renderPopup(ctx,true,game);},()=>{game.menu="title"},1000,700,this.interface)
     };
     this.onerror=onerror;
   }
@@ -31,7 +31,7 @@ sources.rendererClass = class{
   renderButton(btn) {
     if (btn.guiMenu == game.menu||btn.guiMenu=="popup") {
       this.ctx.font="20px Arial";
-      this.ctx.fillStyle="#fff";
+      this.ctx.fillStyle=btn.isButtonTouching(this.interface.cursorX, this.interface.cursorY)?"#fff":"#ddd";
       this.ctx.fillRect(btn.x,btn.y,btn.width,btn.height);
       this.ctx.fillStyle="#000"
       this.ctx.textAlign="center";
@@ -43,7 +43,9 @@ sources.rendererClass = class{
     let btns=this.interface.buttonList;
     for(let i=0;i<btns.length;i++){
       let btn=btns[i];
-      this.renderButton(btn);
+      if(!(btn.hideFunc&&btn.hideFunc())){
+        this.renderButton(btn);
+      }
     }
   }
   renderBackground(){
@@ -70,7 +72,20 @@ sources.rendererClass = class{
         let pos=[player.x+600/2,(this.cameraY-player.y)+this.canvas.height/2]
         if(pos[1]>this.canvas.height){this.renderArrow(pos[0],this.canvas.height-20-M.min(M.abs(player.y-this.cameraY)/10,75),this.canvas.height-20,true);}
         else if(pos[1]<0){this.renderArrow(pos[0],M.min(M.abs(player.y-this.cameraY)/30,75)+20,20,false)}
-        else{ this.ctx.fillRect(pos[0],pos[1],40,40); }
+        else{
+          if(player.freezed){
+            this.ctx.drawImage(images["images/freeze.svg"],pos[0]-20,pos[1]-20,40*2,40*2);
+          }
+          this.ctx.fillStyle=player.color;
+          this.ctx.fillRect(pos[0],pos[1],40,40);
+          if(player.freezed){
+            this.ctx.fillStyle="#fff";
+            this.ctx.font="20px Arial";
+            this.ctx.textAlign="center";
+            this.ctx.fillText((player.freezeTime/60).toFixed(2)+"s",pos[0]+20,pos[1]+20);
+            this.ctx.textAlign="left";
+          }
+        }
       }
       //this.renderArrow(players,i);
       //this.ctx.fillRect(pos[0],pos[1],40,40);
@@ -81,12 +96,21 @@ sources.rendererClass = class{
     for(let i=0;i<platforms.length;i++){
       let platform=platforms[i];
       this.ctx.fillStyle="#000000";
+      if(platform.type==1){this.ctx.fillStyle="#800000";}
+      if(platform.type==2){this.ctx.fillStyle="hsl("+M.floor(Date.now()/8%360)+"deg,100%,50%)";}
+      if(platform.type==3){this.ctx.globalAlpha=0.7;}
+      if(platform.type==4){this.ctx.fillStyle="#ffff00";}
       this.ctx.fillRect(platform.x+600/2,(this.cameraY-(i+1)*120)+this.canvas.height/2,platform.width,platform.height);
+      this.ctx.globalAlpha=1;
     }
   }
   renderLeg(){
     this.ctx.fillStyle="#888";
     this.ctx.fillRect(0,((this.cameraY+this.canvas.height/2)%3000),1000,10);
+  }
+  renderPowerups(game){
+    let pwlist=game.powerupList.powerupList;
+    pwlist.forEach((a)=>{a.render(this.ctx);})
   }
   renderGame(game){
     if(game.playerList.currentList[0].eliminated){
@@ -99,21 +123,23 @@ sources.rendererClass = class{
     this.renderPlatforms(game);
     this.renderLeg();
     game.leaderboard.render(this.ctx,game);
+    this.renderPowerups(game);
   }
-  renderPopups(){
+  renderPopups(game){
     for(let i in Object.keys(this.popupList)){
       //console.log(i);
-      this.popupList[Object.keys(this.popupList)[i]].render(this.ctx);
+      this.popupList[Object.keys(this.popupList)[i]].render(this.ctx,game);
     }
   }
   render(game){
     this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
     try{
       this.interface.update();
+      if(game.menu!="game") this.cameraY=0;
       if(game.menu=="title") this.renderTitlescreen();
       if(game.menu=="game") this.renderGame(game);
       if(game.menu=="popup") this.renderBackground();
-      this.renderPopups();
+      this.renderPopups(game);
       this.renderButtons();
       requestAnimationFrame(()=>{this.render(game)});
     } catch(e) {

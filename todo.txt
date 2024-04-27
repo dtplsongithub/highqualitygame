@@ -4,12 +4,12 @@ gameplay
 
 v movement (should be pretty easy)
 v platforms:
-  - that kill you
-  - that grant you powerups
+  v that kill you (to make the game playable, the platform turns normal when one gets killed)
+  ? that grant you powerups (doesn't give powerups for the while being)
   v that do nothing
-  - that dont collide with you :troll:
-  - that make you jump higher
-  - that move
+  v that dont collide with you :troll:
+  v that make you jump higher
+  v that move
 v collision
 v leaderboard:
   v leaderboard itself
@@ -24,15 +24,30 @@ v legs:
 v player elimination
 v win + lose screen
 v ai
-- powerups
-- timer (should be pretty easy)
+- powerups:
+  v show current powerup
+  ? add a button (or key) for using the powerup
+  v booster (makes your speed higher)
+  v teleporter (makes you teleport to a random player, no you cant choose it)
+  v freezer (upon used, the highest player will be frozen for 5 seconds.)
+  v freeze bullets (upon used, the powerup will make bullets that attack other players, which make them frozen for 4 seconds)
+v timer (should be pretty easy)
 v spectator mode
 v player arrows
 - sound effects
 - background music
 v spectator mode
 
-- MULTIPLAYER
+- MULTIPLAYER:
+  - node.js socket.io server
+  - connect client to server
+  - share player data
+  - chatting
+  - gameplay:
+    - write names instead of colors
+    - share platform data
+    - share player position data
+    - share powerup data
 
 other game related stuff
 
@@ -49,6 +64,10 @@ other game related stuff
 other
 
 v make the code readable (im talking to myself rn)
+- use language json files for translation
+- add mobile support:
+  - ios safari event support
+  - mobile controls
 
 bugs
 

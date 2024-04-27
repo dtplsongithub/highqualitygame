@@ -3,7 +3,7 @@ sources.popupClass = class{
     [this.title,this.width,this.height,this.contentRender,this.onclose,this.interface]=[title,width,height,render,onclose,interfaceElement];
     this.toRender=false;
   }
-  render(ctx){
+  render(ctx,game){
     if(this.toRender){
       ctx.fillStyle="#000a";
       ctx.fillRect(ctx.canvas.width/2-this.width/2,ctx.canvas.height/2-this.height/2,this.width,this.height);
@@ -12,7 +12,7 @@ sources.popupClass = class{
       ctx.font="bold 48px Arial";
       ctx.fillText(this.title,ctx.canvas.width/2,ctx.canvas.height/2+(this.height/-2)+48);
       ctx.textAlign="left";
-      this.contentRender(ctx);
+      this.contentRender(ctx,game);
     }
   }
   open(){

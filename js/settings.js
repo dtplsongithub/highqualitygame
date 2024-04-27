@@ -2,8 +2,9 @@ sources.settingsClass=class{
   constructor(){
     if(!localStorage["keySettings"]){
       this.keySettings={
-        left:37,
-        right:39,
+        left:37, // left arrow key
+        right:39, // right arrow key
+        powerup:38 // up arrow key
       }
     } else {
       this.keySettings=JSON.parse(localStorage["keySettings"]);

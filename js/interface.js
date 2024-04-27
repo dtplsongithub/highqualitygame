@@ -20,11 +20,14 @@ sources.buttonClass = class{
     this.onclickend=callback;
     this.hasOnclickend=true;
   }
+  setHideCheckFunc(func){
+    this.hideFunc=func;
+  }
   isButtonTouching(cursorX,cursorY){
     return isTouching(this.x, this.y, this.width, this.height, cursorX, cursorY, 1, 1);
   }
   update(cursorX,cursorY,clicking){
-    if (this.guiMenu != game.menu&&this.guiMenu!="popup") return;
+    if ((this.guiMenu != game.menu&&this.guiMenu!="popup")||(this.hideFunc&&this.hideFunc())) return;
     if(clicking&&this.isButtonTouching(cursorX,cursorY)&&!this.currentlyClicking){
       this.currentlyClicking=true;
       if(this.hasOnclick)this.onclick();

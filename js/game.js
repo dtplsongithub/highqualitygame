@@ -12,7 +12,9 @@ sources.gameClass = class{
   }
   start(){
     this.menu="game";
+    this.powerupList = new sources.powerupManageClass(this);
     this.playerList.generateRandom();
+    this.playerList.assignPowerupClass(this.powerupList);
     this.platformList.makeRandom();
     this.leaderboard = new sources.leaderboardClass(this.playerList);
     this.timeStart=Date.now();
@@ -22,8 +24,11 @@ sources.gameClass = class{
       let keys = this.settings.keySettings;
       //let horizontal=this.keyboard.hasKey(true,keys.right,"key")-this.keyboard.hasKey(true,keys.left,"key");
       let horizontal=sources.keyboard.includes(keys.right)-sources.keyboard.includes(keys.left);
-      this.playerList.update(horizontal,0,this.platformList);
+      this.platformList.update();
+      this.playerList.update(horizontal,0,this.platformList,sources.keyboard.includes(keys.powerup));
+      this.powerupList.update();
       if(this.playerList.currentList.filter((a)=>!a.eliminated).length==1){
+        this.gameTime=Date.now();
         this.popupTrigger(this.playerList.currentList.filter((a)=>a.isHost)[0].eliminated?"lost":"win");
         this.menu="popup";
       }
