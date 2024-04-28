@@ -1,5 +1,12 @@
 function onError(e){
-  alert((sources.languageText["unexpectedError"]?sources.languageText["unexpectedError"]:"An unexpected error has occured. Please reload the page and try again.\nTechnical information: ")+(e.stack?e.stack:e))
+  console.error(e);
+  let msg="";
+  if(sources.languageText&&sources.languageText["unexpectedError"]){
+    msg=sources.languageText["unexpectedError"]
+  } else {
+    msg="An unexpected error has occured. Please reload the page and try again.\nTechnical information: ";
+  }
+  alert(msg+(e.stack?e.stack:e))
 }
 try{
   window.game = new sources.gameClass();

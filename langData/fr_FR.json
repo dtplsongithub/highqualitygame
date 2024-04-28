@@ -1,9 +1,9 @@
 {
   "langPackMeta":{
-    "languageName":"English (US)",
-    "languageCode":"en_US",
-    "author":"@Ponali, d",
-    "description":"Default English language pack, created during development of highqualitygame.\nThis may only appear in case your browser's language isn't supported.\nYou are free to use this language pack and translate it, then sumbit a pull request."
+    "languageName":"Français (France)",
+    "languageCode":"fr_FR",
+    "author":"@Ponali",
+    "description":"Pack de langage français, créé pendant la développement de highqualitygame.\nCe pack devrait être un test, mais va bientôt devenir un pack de langage officiel."
   },
   "gameName":"highqualitygame",
   "unexpectedError":"An unexpected error has occured. Please reload the page and try again.\nTechnical information: ",

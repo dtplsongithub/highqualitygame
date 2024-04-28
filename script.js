@@ -76,7 +76,7 @@ function loadImages(callback){
   })
 };
 function loadLanguagePacks(callback){
-  loader.loadMultiple(["langData/en_US.json"],"json",true,(loaded)=>{
+  loader.loadMultiple(["langData/en_US.json","langData/fr_FR.json"],"json",true,(loaded)=>{
     languagePacks=loaded;
     callback();
   })
