@@ -10,7 +10,11 @@ sources.powerupClass=class{
     console.log(this.playerList);
   }
   boosterUpdate(){
-    if(!this.expire){this.expire=60*6;this.gameElement.notifyFunction(sources.languageText["eventPlayerBoost"].replace("%a",this.player.color))}
+    if(!this.expire){
+      this.expire=60*6;
+      this.gameElement.notifyFunction(sources.languageText["eventPlayerBoost"].replace("%a",this.player.color));
+      window.sfxManager.playAudio("sound/sfxBoost.mp3");
+    }
     this.expire--;
     this.player.bounceVY=30;
     this.player.ignoreDeathlyPlatforms=true;

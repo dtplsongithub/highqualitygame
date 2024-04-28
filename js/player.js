@@ -24,7 +24,8 @@ sources.playerClass = class{
   eliminate(){
     this.eliminated=true;
     this.elimTime=Date.now();
-    this.currentGameElement.notifyFunction(sources.languageText["eventPlayerEliminated"].replace("%a",this.color).replace("%b",this.currentLeg))
+    this.currentGameElement.notifyFunction(sources.languageText["eventPlayerEliminated"].replace("%a",this.color).replace("%b",this.currentLeg));
+    window.sfxManager.playAudio("sound/sfxEliminate.mp3");
   }
   checkSameLeg(leg,list){
     list=list.filter((a)=>!a.eliminated);
@@ -70,6 +71,7 @@ sources.playerClass = class{
       if(platformList.touchingPlatform(this)&&(platformList.getCurrentPlatform(this).type==2)){
         if(!this.hasPowerup){
           console.log("powerup");
+          
           this.currentPowerup=0;
           while(this.currentPowerup==0){
             if(M.random()>0.95){ this.currentPowerup=1; } // booster
@@ -78,6 +80,8 @@ sources.playerClass = class{
             if(M.random()>0.96){ this.currentPowerup=4; } // freeze bullets
           }
           this.hasPowerup=true;
+
+          window.sfxManager.playAudio("sound/sfxPowerup"+(this.currentPowerup == 2 ? "2" : "")+".mp3");
           platformList.currentList[platformList.currentList.indexOf(platformList.getCurrentPlatform(this))].type=0;
         }
       }
@@ -109,6 +113,7 @@ sources.playerClass = class{
       // "this.vy<0" to make sure the player is falling.
   
       if(this.currentLeg<M.floor(this.y/3000)){
+        if (this.isHost) window.sfxManager.playAudio("sound/sfxLap.mp3");
         this.currentLeg=M.floor(this.y/3000);
         this.checkSameLeg(this.currentLeg,list);
       }

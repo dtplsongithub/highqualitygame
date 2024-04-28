@@ -9,12 +9,15 @@ sources.rendererClass = class{
     this.cameraY=0;
     this.interface = new sources.interfaceClass(this.canvas);
     this.popupList = {
-      "win":new sources.popupClass(sources.languageText["popupWinTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,false,game);},()=>{game.menu="title"},1000,700,this.interface,[]),
-      "lost":new sources.popupClass(sources.languageText["popupLostTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,true,game);},()=>{game.menu="title"},1000,700,this.interface,[]),
+      "win":new sources.popupClass(sources.languageText["popupWinTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,false,game);},()=>{game.menu="title";this.bgmManager.fadeTo(1000,"sound/bgmTitle.mp3")},1000,700,this.interface,[]),
+      "lost":new sources.popupClass(sources.languageText["popupLostTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,true,game);},()=>{game.menu="title";this.bgmManager.fadeTo(1000,"sound/bgmTitle.mp3")},1000,700,this.interface,[]),
       "settings":game.settings.getPopup(this.interface)
     };
     this.notifications = new sources.notificationManageClass();
     this.onerror=onerror;
+  }
+  assignBgmManager(bgmManager){
+    this.bgmManager=bgmManager;
   }
   renderTitlescreen(){
     let width,height;[width,height]=[this.canvas.width,this.canvas.height];
@@ -169,6 +172,19 @@ sources.rendererClass = class{
       this.popupList[Object.keys(this.popupList)[i]].render(this.ctx,game);
     }
   }
+  renderIntro(game){
+    let time=(Date.now()-game.timeStart)/1000;
+    this.ctx.fillStyle="#113";
+    this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height)
+    this.ctx.fillStyle="#fff";
+    this.ctx.font="36px Arial"
+    this.ctx.fillText(sources.languageText["introStartText"],100,this.canvas.height/3);
+    this.ctx.font="bold italic 36px Arial";
+    let people=["Ponali","dateplays"];
+    for(let i=0;i<people.length;i++){
+      this.ctx.fillText(people[i],100,this.canvas.height/3+40*(i+1)+(M.min(time-(1+i/2),0)**2)*1000+M.sin(Date.now()/1000*M.PI+i/1.2))*5;
+    }
+  }
   render(game){
     this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
     try{
@@ -177,6 +193,7 @@ sources.rendererClass = class{
       if(game.menu=="title") this.renderTitlescreen();
       if(game.menu=="game") this.renderGame(game);
       if(game.menu=="popup") this.renderBackground();
+      if(game.menu=="intro") this.renderIntro(game);
       this.renderPopups(game);
       this.renderInterface();
       this.notifications.render(this.ctx);

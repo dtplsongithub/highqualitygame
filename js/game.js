@@ -4,7 +4,8 @@ sources.gameClass = class{
     //this.keyboard = new sources.keyboardClass();
     this.settings = new sources.settingsClass();
     this.platformList = new sources.platformList();
-    this.menu="title";
+    this.menu="intro";
+    setTimeout(()=>{this.menu="title"},4000)
     this.timeStart=Date.now();
   }
   triggerPopupEvent(event){
@@ -12,6 +13,9 @@ sources.gameClass = class{
   }
   notifyEvent(event){
     this.notifyFunction=event;
+  }
+  assignBgmManager(bgmManager){
+    this.bgmManager=bgmManager;
   }
   start(){
     this.menu="game";
@@ -21,6 +25,7 @@ sources.gameClass = class{
     this.platformList.makeRandom();
     this.leaderboard = new sources.leaderboardClass(this.playerList);
     this.timeStart=Date.now()+3000;
+    this.bgmManager.fadeTo(1000,"sound/bgmGame.mp3") // if only there was a bgmGame.mp3
   }
   update(){
     if(this.menu=="game"){
@@ -31,6 +36,7 @@ sources.gameClass = class{
       this.playerList.update(horizontal,0,this.platformList,sources.keyboard.includes(keys.powerup),this);
       this.powerupList.update();
       if(this.playerList.currentList.filter((a)=>!a.eliminated).length==1){
+        window.sfxManager.playAudio("sound/sfxGameover.mp3");
         this.gameTime=Date.now();
         this.popupTrigger(this.playerList.currentList.filter((a)=>a.isHost)[0].eliminated?"lost":"win");
         this.menu="popup";

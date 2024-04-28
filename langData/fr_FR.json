@@ -47,5 +47,6 @@
   "eventPlayerTeleporter":"%a s'est téléporté quelque part...",
   "eventPlayerFreeze":"%b a fait geler %a!",
   "eventPlayerFreezeBullet":"%a a lancé une gèle-balle! faites attention!",
-  "eventPlayerEliminated":"%a a été éliminé au niveau %b"
+  "eventPlayerEliminated":"%a a été éliminé au niveau %b",
+  "introStartText":"créé avec le travail énorme de..."
 }

@@ -47,5 +47,6 @@
   "eventPlayerTeleporter":"%a has used a teleporter",
   "eventPlayerFreeze":"%a has been freezed by %b!",
   "eventPlayerFreezeBullet":"%a has launched a freeze bullet!",
-  "eventPlayerEliminated":"%a has been eliminated at leg %b"
+  "eventPlayerEliminated":"%a has been eliminated at leg %b",
+  "introStartText":"made by lots of work from..."
 }

@@ -5,7 +5,7 @@ gameplay
 v movement (should be pretty easy)
 v platforms:
   v that kill you (to make the game playable, the platform turns normal when one gets killed)
-  ? that grant you powerups (doesn't give powerups for the while being)
+  v that grant you powerups
   v that do nothing
   v that dont collide with you :troll:
   v that make you jump higher
@@ -34,8 +34,8 @@ v ai
 v timer (should be pretty easy)
 v spectator mode
 v player arrows
-- sound effects
-- background music
+v sound effects
+v background music
 v spectator mode
 - text showing what happened, like notifications
 v timer counting from 3 to 1 before game starts
@@ -55,13 +55,12 @@ other game related stuff
 
 ? title screen
 - about screen
-- credits screen
+v credits screen
 ? settings:
   - fps changer
   v difficulty chooser
   - color chooser
   - show faces?
-  - other i forgor
 - pausing
 
 other
@@ -70,11 +69,11 @@ v make the code readable (im talking to myself rn)
 v use language json files for translation
 - add mobile support:
   - ios safari event support
-  - mobile controls
+  - mobile controls <- oh boy this will take a while
 
 bugs
 
-? sometimes you cant see the player because it goes too much on the left/right
+could not find any ¯\_(ツ)_/¯
 
 v - complete
 ? - partially complete

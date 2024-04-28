@@ -49,6 +49,7 @@ sources.sliderClass = class{
     if (this.guiMenu != game.menu&&this.guiMenu!="popup") return;
     if(clicking&&this.isButtonTouching(cursorX,cursorY)&&!this.currentlyClicking){
       this.currentlyClicking=true;
+      window.sfxManager.playAudio("sound/sfxClick.wav");
       if(this.hasOnclick)this.onclick();
     }
     if(this.currentlyClicking){
