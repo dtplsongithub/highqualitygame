@@ -9,11 +9,11 @@ sources.playerListClass = class{
   set(players){
     if(players) this.currentList=players;
   }
-  generateRandom(){
+  generateRandom(difficulty){
     let colors=["blue","red","orange","yellow","lightgreen","cyan","navy","purple","black","gray","pink","maroon","darkgreen","lightseagreen","lightcoral"]
     let playerList=[];
     for(let i=0;i<15;i++){
-      playerList.push(new sources.playerClass((M.random()-0.5)*400,M.random(),colors[i],i==0));
+      playerList.push(new sources.playerClass((M.random()-0.5)*400,M.random(),colors[i],i==0,difficulty));
     }
     this.currentList=playerList;
   }

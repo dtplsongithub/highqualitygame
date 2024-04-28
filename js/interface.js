@@ -38,6 +38,31 @@ sources.buttonClass = class{
     }
   }
 }
+sources.sliderClass = class{
+  constructor(x,y,width,height,min,max,value,guiMenu,onChange){
+    [this.x,this.y,this.width,this.height,this.min,this.max,this.value,this.guiMenu,this.onChange]=[x,y,width,height,min,max,value,guiMenu,onChange];
+  }
+  isButtonTouching(cursorX,cursorY){
+    return isTouching(this.x, this.y, this.width, this.height, cursorX, cursorY, 1, 1);
+  }
+  update(cursorX,cursorY,clicking){
+    if (this.guiMenu != game.menu&&this.guiMenu!="popup") return;
+    if(clicking&&this.isButtonTouching(cursorX,cursorY)&&!this.currentlyClicking){
+      this.currentlyClicking=true;
+      if(this.hasOnclick)this.onclick();
+    }
+    if(this.currentlyClicking){
+      const oldVal=this.value;
+      this.value=this.min+((this.max-this.min)*((cursorX-this.x)/(this.width)));
+      this.value=M.max(M.min(this.value,this.max),this.min);
+      if(this.onChange&&oldVal!=this.value)this.onChange(this.value);
+    }
+    if(this.currentlyClicking&&!clicking){
+      this.currentlyClicking=false;
+      if(this.hasOnclickend)this.onclickend();
+    }
+  }
+}
 sources.interfaceClass = class{
   constructor(cnv){
     this.buttonList=[];

@@ -13,7 +13,7 @@ sources.gameClass = class{
   start(){
     this.menu="game";
     this.powerupList = new sources.powerupManageClass(this);
-    this.playerList.generateRandom();
+    this.playerList.generateRandom(this.settings.aiDifficulty);
     this.playerList.assignPowerupClass(this.powerupList);
     this.platformList.makeRandom();
     this.leaderboard = new sources.leaderboardClass(this.playerList);

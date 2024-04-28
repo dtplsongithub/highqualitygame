@@ -23,14 +23,23 @@ sources.settingsClass=class{
         left:37, // left arrow key
         right:39, // right arrow key
         powerup:38 // up arrow key
-      }
+      };
     } else {
       this.keySettings=JSON.parse(localStorage["keySettings"]);
+    }
+    if(!localStorage["aiDifficulty"]){
+      this.aiDifficulty=0.5;
+    } else {
+      this.aiDifficulty=parseFloat(localStorage["aiDifficulty"]);
     }
   }
   setKeys(keySettings){
     if(keySettings) this.keySettings=keySettings;
     localStorage["keySettings"]=JSON.stringify(keySettings);
+  }
+  setAIDifficulty(aiDifficulty){
+    if(aiDifficulty) this.aiDifficulty=aiDifficulty;
+    localStorage["aiDifficulty"]=aiDifficulty;
   }
   getPopup(interfaceElement){
     let thisClass=this;
@@ -86,13 +95,18 @@ sources.settingsClass=class{
       ctx.fillStyle="#fff";
       ctx.fillText(sources.languageText["settingsLanguageGroup"],100,360);
       ctx.font="24px Arial";
-      ctx.fillText(sources.languageText["langPackMeta"]["languageName"],100,420);
-      ctx.fillText(sources.languageText["settingsLanguageCode"].replace("%a",sources.languageText["langPackMeta"]["languageCode"]),100,450);
-      ctx.fillText(sources.languageText["settingsLanguageAuthor"].replace("%a",sources.languageText["langPackMeta"]["author"]),100,480);
+      ctx.fillText(sources.languageText["langPackMeta"]["languageName"],100,400);
+      ctx.fillText(sources.languageText["settingsLanguageCode"].replace("%a",sources.languageText["langPackMeta"]["languageCode"]),100,430);
+      ctx.fillText(sources.languageText["settingsLanguageAuthor"].replace("%a",sources.languageText["langPackMeta"]["author"]),100,460);
       let desc=sources.languageText["langPackMeta"]["description"].split("\n");
-      for(let i=0;i<desc.length;i++){
-        ctx.fillText(desc[i],100,520+i*28,ctx.canvas.width-100*2);
+      for(let i=0;i<M.min(desc.length,3);i++){
+        ctx.fillText(desc[i],100,500+i*28,ctx.canvas.width-100*2);
       }
+      ctx.font="bold 32px Arial";
+      ctx.fillStyle="#fff";
+      ctx.fillText(sources.languageText["settingsSingleplayerGroup"],100,600);
+      ctx.font="24px Arial";
+      ctx.fillText(sources.languageText["settingsSingleplayerPlayerDifficulty"],100,630);
     },()=>{
       console.log(sources.languageText["langPackMeta"]["languageCode"],localStorage["language"])
       if(sources.languageText["langPackMeta"]["languageCode"]!=localStorage["language"]){
@@ -102,11 +116,12 @@ sources.settingsClass=class{
       }
       game.menu="title";
     },1000,700,interfaceElement,[
-      keySetButton(sources.languageText["settingsKey"],"left",400,230,100,25),
-      keySetButton(sources.languageText["settingsKey"],"right",400,260,100,25),
-      keySetButton(sources.languageText["settingsKey"],"powerup",400,290,100,25),
-      swapButton(360,370,-1,languagePacks,sources.languageText,(a)=>{sources.languageText=a}),
-      swapButton(400,370,1,languagePacks,sources.languageText,(a)=>{sources.languageText=a})
+      keySetButton(sources.languageText["settingsKey"],"left",460,230,100,25),
+      keySetButton(sources.languageText["settingsKey"],"right",460,260,100,25),
+      keySetButton(sources.languageText["settingsKey"],"powerup",460,290,100,25),
+      swapButton(360,338,-1,languagePacks,sources.languageText,(a)=>{sources.languageText=a}),
+      swapButton(400,338,1,languagePacks,sources.languageText,(a)=>{sources.languageText=a}),
+      new sources.sliderClass(400,610,200,20,0,1,this.aiDifficulty,"popup",(a)=>{thisClass.setAIDifficulty(a)})
     ])
   }
 }

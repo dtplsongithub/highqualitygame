@@ -40,5 +40,7 @@
   "settingsLanguageCode":"language code: %a",
   "settingsLanguageAuthor":"author: %a",
   "usePowerup":"use powerup",
-  "settingsPopupTitle":"Settings"
+  "settingsPopupTitle":"Settings",
+  "settingsSingleplayerGroup":"Singleplayer",
+  "settingsSingleplayerPlayerDifficulty":"Player difficulty"
 }

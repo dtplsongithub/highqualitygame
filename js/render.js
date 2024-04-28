@@ -39,12 +39,27 @@ sources.rendererClass = class{
       this.ctx.textAlign="left";
     }
   }
-  renderButtons(){
+  renderSlider(sld){
+    if(sld.guiMenu==game.menu||sld.guiMenu=="popup"){
+      let val=(sld.value-sld.min)/(sld.max-sld.min);
+      this.ctx.fillStyle="#48b";
+      this.ctx.fillRect(sld.x,sld.y+sld.height/3,val*sld.width,sld.height/3);
+      this.ctx.fillStyle="#ddd";
+      this.ctx.fillRect(sld.x+val*sld.width,sld.y+sld.height/3,(1-val)*sld.width,sld.height/3);
+      this.ctx.fillStyle="#08f";
+      this.ctx.fillRect(sld.x+val*sld.width-sld.height/2,sld.y,sld.height,sld.height);
+    }
+  }
+  renderInterface(){
     let btns=this.interface.buttonList;
     for(let i=0;i<btns.length;i++){
       let btn=btns[i];
-      if(!(btn.hideFunc&&btn.hideFunc())){
-        this.renderButton(btn);
+      if(btn instanceof sources.buttonClass){
+        if(!(btn.hideFunc&&btn.hideFunc())){
+          this.renderButton(btn);
+        }
+      } else if(btn instanceof sources.sliderClass){
+        this.renderSlider(btn);
       }
     }
   }
@@ -162,7 +177,7 @@ sources.rendererClass = class{
       if(game.menu=="game") this.renderGame(game);
       if(game.menu=="popup") this.renderBackground();
       this.renderPopups(game);
-      this.renderButtons();
+      this.renderInterface();
       requestAnimationFrame(()=>{this.render(game)});
     } catch(e) {
       this.onerror(e);

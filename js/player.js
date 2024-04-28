@@ -1,5 +1,5 @@
 sources.playerClass = class{
-  constructor(x, y, color, isHost) {
+  constructor(x, y, color, isHost, difficulty) {
     this.x = x;
     this.y = y;
     this.vx = 0;
@@ -9,7 +9,7 @@ sources.playerClass = class{
     this.currentLeg=0;
     this.eliminated=false;
     this.aiThinkSeed=M.random();
-    this.difficulty=0.5; // 0: easy, 1: hard.
+    this.difficulty=1-difficulty; // 0: easy, 1: hard.
     this.currentPowerup=0;
     this.hasPowerup=false;
     this.bounceVY=25;
@@ -40,7 +40,7 @@ sources.playerClass = class{
     let difficulty=this.difficulty*2;
     let dv=1.9+(1-difficulty)*13.1;
     let out=M.floor(this.y/120-difficulty/2.5)+1+(this.vx>10)*M.max(M.round(this.aiThinkSeed+M.sin(this.aiThinkSeed*743.12+(this.y+this.aiThinkSeed*7318.111/111)/(5000+M.sin(this.aiThinkSeed*176.43+Date.now()/5000)*500))/1.9),1);
-    while(platformList.currentList[out].type==3){
+    while(platformList.currentList.length<=out||out<0||platformList.currentList[out].type==3){
       out+=(M.random()>0.5)*2-1;
     }
     return out;

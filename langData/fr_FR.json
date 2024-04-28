@@ -40,5 +40,7 @@
   "settingsLanguageCode":"code du language: %a",
   "settingsLanguageAuthor":"auteur: %a",
   "usePowerup":"utiliser",
-  "settingsPopupTitle":"Paramétres"
+  "settingsPopupTitle":"Paramétres",
+  "settingsSingleplayerGroup":"Jeux solo",
+  "settingsSingleplayerPlayerDifficulty":"Difficulté des faux joueurs"
 }
