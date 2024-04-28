@@ -17,7 +17,7 @@ try{
   playButton.setClickEvent(()=>{window.game.start();})
   let settingsButton=new sources.buttonClass(sources.languageText["settingsButton"],526,437,100,35, "title");
   settingsButton.setClickEvent(()=>{window.game.menu="popup";window.renderer.popupList["settings"].open();})
-  let powerupButton=new sources.buttonClass("use powerup",120,70,140,35, "game");
+  let powerupButton=new sources.buttonClass(sources.languageText["usePowerup"],120,70,140,35, "game");
   powerupButton.setClickEvent(()=>{window.game.playerList.currentList.filter((a)=>a.isHost)[0].usePowerup();});
   powerupButton.setHideCheckFunc(()=>{if(!window.game.playerList.currentList){return;};return !window.game.playerList.currentList.filter((a)=>a.isHost)[0].hasPowerup});
   window.renderer.interface.addButton(playButton);

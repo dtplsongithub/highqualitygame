@@ -74,7 +74,7 @@ sources.settingsClass=class{
       });
       return btn;
     }
-    return new sources.popupClass("Settings",(ctx)=>{
+    return new sources.popupClass(sources.languageText["settingsPopupTitle"],(ctx)=>{
       ctx.font="bold 32px Arial";
       ctx.fillStyle="#fff";
       ctx.fillText(sources.languageText["settingsKeyboardGroup"],100,200);
@@ -91,7 +91,7 @@ sources.settingsClass=class{
       ctx.fillText(sources.languageText["settingsLanguageAuthor"].replace("%a",sources.languageText["langPackMeta"]["author"]),100,480);
       let desc=sources.languageText["langPackMeta"]["description"].split("\n");
       for(let i=0;i<desc.length;i++){
-        ctx.fillText(desc[i],100,520+i*28);
+        ctx.fillText(desc[i],100,520+i*28,ctx.canvas.width-100*2);
       }
     },()=>{
       console.log(sources.languageText["langPackMeta"]["languageCode"],localStorage["language"])

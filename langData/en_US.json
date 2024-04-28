@@ -11,7 +11,7 @@
   "leg":"leg %a",
   "spectatorEliminated":"you got eliminated at %a place",
   "currentlySpectating":"currently spectating %a",
-  "powerups":["booster","teleporter","freezer","freeze bullet","black hole"],
+  "powerups":["booster","teleporter","freezer","freeze bullet"],
   "popupGameEliminated":"you got eliminated at %a place. ",
   "popupGameTime":"the game took %a seconds.",
   "playButton":"play",
@@ -38,5 +38,7 @@
   "settingsKeyboardGroup":"Keyboard",
   "settingsLanguageGroup":"Language",
   "settingsLanguageCode":"language code: %a",
-  "settingsLanguageAuthor":"author: %a"
+  "settingsLanguageAuthor":"author: %a",
+  "usePowerup":"use powerup",
+  "settingsPopupTitle":"Settings"
 }
