@@ -42,5 +42,10 @@
   "usePowerup":"use powerup",
   "settingsPopupTitle":"Settings",
   "settingsSingleplayerGroup":"Singleplayer",
-  "settingsSingleplayerPlayerDifficulty":"Player difficulty"
+  "settingsSingleplayerPlayerDifficulty":"Player difficulty",
+  "eventPlayerBoost":"%a is now boosting",
+  "eventPlayerTeleporter":"%a has used a teleporter",
+  "eventPlayerFreeze":"%a has been freezed by %b!",
+  "eventPlayerFreezeBullet":"%a has launched a freeze bullet!",
+  "eventPlayerEliminated":"%a has been eliminated at leg %b"
 }

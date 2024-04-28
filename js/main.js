@@ -10,7 +10,7 @@ function onError(e){
 }
 try{
   window.game = new sources.gameClass();
-  setInterval(()=>{window.game.update()},1000/60);
+  setInterval(()=>{window.game.update();window.renderer.notifications.update();},1000/60);
   window.renderer = new sources.rendererClass(q("#logs"),1152,864,onError);
   window.renderer.render(window.game);
   let playButton=new sources.buttonClass(sources.languageText["playButton"],526,400,100,35, "title");
@@ -23,7 +23,8 @@ try{
   window.renderer.interface.addButton(playButton);
   window.renderer.interface.addButton(settingsButton);
   window.renderer.interface.addButton(powerupButton);
-  window.game.triggerPopupEvent((e)=>{console.log(e);window.renderer.popupList[e].open();})
+  window.game.triggerPopupEvent((e)=>{console.log(e);window.renderer.popupList[e].open();});
+  window.game.notifyEvent((e)=>{console.log(e);window.renderer.notifications.notify(e);})
 } catch(e) {
   onError(e)
 }

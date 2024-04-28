@@ -13,6 +13,7 @@ sources.rendererClass = class{
       "lost":new sources.popupClass(sources.languageText["popupLostTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,true,game);},()=>{game.menu="title"},1000,700,this.interface,[]),
       "settings":game.settings.getPopup(this.interface)
     };
+    this.notifications = new sources.notificationManageClass();
     this.onerror=onerror;
   }
   renderTitlescreen(){
@@ -178,6 +179,7 @@ sources.rendererClass = class{
       if(game.menu=="popup") this.renderBackground();
       this.renderPopups(game);
       this.renderInterface();
+      this.notifications.render(this.ctx);
       requestAnimationFrame(()=>{this.render(game)});
     } catch(e) {
       this.onerror(e);

@@ -10,6 +10,9 @@ sources.gameClass = class{
   triggerPopupEvent(event){
     this.popupTrigger=event;
   }
+  notifyEvent(event){
+    this.notifyFunction=event;
+  }
   start(){
     this.menu="game";
     this.powerupList = new sources.powerupManageClass(this);

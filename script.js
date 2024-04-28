@@ -41,7 +41,7 @@ let loader=new Loader(log);
 let sources={};
 let images={};
 let languagePacks={};
-let scripts=["js/powerup.js","js/leaderboard.js","js/platforms.js","js/render.js","js/player.js","js/playerList.js","js/keyboard.js","js/settings.js","js/game.js","js/interface.js","js/popup.js","js/main.js"];
+let scripts=["js/notifications.js","js/powerup.js","js/leaderboard.js","js/platforms.js","js/render.js","js/player.js","js/playerList.js","js/keyboard.js","js/settings.js","js/game.js","js/interface.js","js/popup.js","js/main.js"];
 function loadScripts(){
   loader.loadMultiple(scripts,"text",false,(loaded)=>{
     let funcs={};

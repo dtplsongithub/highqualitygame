@@ -42,5 +42,10 @@
   "usePowerup":"utiliser",
   "settingsPopupTitle":"Paramétres",
   "settingsSingleplayerGroup":"Jeux solo",
-  "settingsSingleplayerPlayerDifficulty":"Difficulté des faux joueurs"
+  "settingsSingleplayerPlayerDifficulty":"Difficulté des faux joueurs",
+  "eventPlayerBoost":"la vitesse de %a est maintenant augmentée!",
+  "eventPlayerTeleporter":"%a s'est téléporté quelque part...",
+  "eventPlayerFreeze":"%b a fait geler %a!",
+  "eventPlayerFreezeBullet":"%a a lancé une gèle-balle! faites attention!",
+  "eventPlayerEliminated":"%a a été éliminé au niveau %b"
 }

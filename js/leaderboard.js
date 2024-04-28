@@ -129,7 +129,7 @@ sources.leaderboardClass = class{
   renderPopup(ctx,lost,game){
     ctx.font="32px Arial";
     ctx.textAlign="center";
-    ctx.fillText(sources.languageText["popupGameEliminated"].replace("%a",this.getPlaceRepresentation(this.findHostIdx())).repeat(lost)+sources.languageText["popupGameTime"].replace("%a",this.timeRepresentation(game.gameTime-game.timeStart)),ctx.canvas.width/2,170);
+    ctx.fillText(sources.languageText["popupGameEliminated"].replace("%a",this.getPlaceRepresentation(this.findHostIdx())).repeat(lost)+sources.languageText["popupGameTime"].replace("%a",this.timeRepresentation(game.gameTime-game.timeStart)),ctx.canvas.width/2,170,970);
     ctx.textAlign="left";
     let players = this.getSortedPlayers();
     for(let i=0;i<3;i++){

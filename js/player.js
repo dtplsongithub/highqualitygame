@@ -17,13 +17,14 @@ sources.playerClass = class{
     this.freezed=false;
   }
   usePowerup(){
-    this.powerupClass.usePowerup(this,this.playerList);
+    this.powerupClass.usePowerup(this,this.playerList,this.currentGameElement);
     this.hasPowerup=false;
     this.currentPowerup=0;
   }
   eliminate(){
     this.eliminated=true;
     this.elimTime=Date.now();
+    this.currentGameElement.notifyFunction(sources.languageText["eventPlayerEliminated"].replace("%a",this.color).replace("%b",this.currentLeg))
   }
   checkSameLeg(leg,list){
     list=list.filter((a)=>!a.eliminated);
@@ -53,6 +54,7 @@ sources.playerClass = class{
     return (platformX-this.x)/2
   }
   update(vx, vy, ai, platformList,list,pwc,usePowerup,game){
+    this.currentGameElement=game;
     this.powerupClass=pwc;
     this.playerList=list;
     if((!this.eliminated)&&(!this.freezed)){

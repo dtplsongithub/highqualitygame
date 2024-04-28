@@ -5,12 +5,12 @@ function getAngle(x0,y0,x1,y1){
   return M.atan((y1-y0)/(x1-x0))/M.PI*180;
 }
 sources.powerupClass=class{
-  constructor(pwlist,player,playerList,type,removeFunction){
-    [this.player,this.playerList,this.type,this.remove,this.pwlist]=[player,playerList,type,removeFunction,pwlist];
+  constructor(pwlist,player,playerList,type,game,removeFunction){
+    [this.player,this.playerList,this.type,this.remove,this.pwlist,this.gameElement]=[player,playerList,type,removeFunction,pwlist,game];
     console.log(this.playerList);
   }
   boosterUpdate(){
-    if(!this.expire){this.expire=60*6;}
+    if(!this.expire){this.expire=60*6;this.gameElement.notifyFunction(sources.languageText["eventPlayerBoost"].replace("%a",this.player.color))}
     this.expire--;
     this.player.bounceVY=30;
     this.player.ignoreDeathlyPlatforms=true;
@@ -21,6 +21,7 @@ sources.powerupClass=class{
     }
   }
   teleporterUpdate(){
+    this.gameElement.notifyFunction(sources.languageText["eventPlayerTeleporter"].replace("%a",this.player.color))
     const list = [...this.playerList];
     let most = list.sort((a,b)=>b.y-a.y)[0].y;
     this.player.y=most+100;
@@ -35,6 +36,7 @@ sources.powerupClass=class{
       if(this.freezedPlayer==this.player){
         this.freezedPlayer=sorted[1];
       }
+      this.gameElement.notifyFunction(sources.languageText["eventPlayerFreeze"].replace("%a",this.freezedPlayer.color).replace("%b",this.player.color))
     }
     this.freezedPlayer.freezed=true;
     this.freezedPlayer.freezeTime=this.expire;
@@ -49,7 +51,10 @@ sources.powerupClass=class{
     if(!this.y){this.y=this.player.y;}
     if(!this.speed){this.speed=1;}
     if(!this.rot){this.rot=0;}
-    if(!this.expire){this.expire=60*10;}
+    if(!this.expire){
+      this.expire=60*10;
+      this.gameElement.notifyFunction(sources.languageText["eventPlayerFreezeBullet"].replace("%a",this.player.color))
+    }
     let closestPlayer=this.playerList.filter((a)=>a!=this.player).sort((a,b)=>getDistance(a.x,a.y,this.x,this.y)-getDistance(b.x,b.y,this.x,this.y))[0];
     let playerAngle=getAngle(this.x,this.y,closestPlayer.x,closestPlayer.y);
     playerAngle+=0; // try adjusting that so it actually goes to a player
@@ -116,9 +121,9 @@ sources.powerupManageClass=class{
   constructor(){
     this.powerupList=[];
   }
-  usePowerup(player,playerList){
+  usePowerup(player,playerList,game){
     if(!player.hasPowerup){throw new Error("tried to use powerup but doesn't have one.");};
-    let pw=new sources.powerupClass(this,player,playerList,player.currentPowerup,()=>{
+    let pw=new sources.powerupClass(this,player,playerList,player.currentPowerup,game,()=>{
       this.powerupList.splice(this.powerupList.indexOf(pw),1);
     })
     this.powerupList.push(pw);

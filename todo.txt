@@ -56,17 +56,18 @@ other game related stuff
 ? title screen
 - about screen
 - credits screen
-- settings:
+? settings:
   - fps changer
-  - difficulty chooser
+  v difficulty chooser
   - color chooser
   - show faces?
   - other i forgor
+- pausing
 
 other
 
 v make the code readable (im talking to myself rn)
-- use language json files for translation
+v use language json files for translation
 - add mobile support:
   - ios safari event support
   - mobile controls
