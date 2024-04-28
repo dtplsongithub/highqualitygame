@@ -38,7 +38,7 @@ v player arrows
 - background music
 v spectator mode
 - text showing what happened, like notifications
-- timer counting from 3 to 1 before game starts
+v timer counting from 3 to 1 before game starts
 
 - MULTIPLAYER:
   - node.js socket.io server

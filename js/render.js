@@ -1,7 +1,6 @@
 sources.rendererClass = class{
   constructor(node,width,height,onerror){
-    this.canvas = document.createElement("canvas"); // i think it fails to do this because it says its undefined oh well deleting it worked
-    // how does this even output an error???
+    this.canvas = document.createElement("canvas");
     [this.canvas.width,this.canvas.height]=[width,height];
     this.ctx=this.canvas.getContext("2d");
     node.innerHTML="";
@@ -10,8 +9,8 @@ sources.rendererClass = class{
     this.cameraY=0;
     this.interface = new sources.interfaceClass(this.canvas);
     this.popupList = {
-      "win":new sources.popupClass("You won!",(ctx,game)=>{game.leaderboard.renderPopup(ctx,false,game);},()=>{game.menu="title"},1000,700,this.interface,[]),
-      "lost":new sources.popupClass("You lost",(ctx,game)=>{game.leaderboard.renderPopup(ctx,true,game);},()=>{game.menu="title"},1000,700,this.interface,[]),
+      "win":new sources.popupClass(sources.languageText["popupWinTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,false,game);},()=>{game.menu="title"},1000,700,this.interface,[]),
+      "lost":new sources.popupClass(sources.languageText["popupLostTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,true,game);},()=>{game.menu="title"},1000,700,this.interface,[]),
       "settings":game.settings.getPopup(this.interface)
     };
     this.onerror=onerror;
@@ -23,7 +22,7 @@ sources.rendererClass = class{
     this.ctx.fillStyle="black";
     this.ctx.font="64px Arial";
     this.ctx.textAlign="center";
-    let gameName = "highqualitygame";
+    let gameName = sources.languageText["gameName"];
     for (let i in gameName) {
       this.ctx.fillText(gameName[i] ,this.canvas.width/2+(i-gameName.length/2)*40,300+M.sin(Date.now()/500+i/2)*16);
     }
@@ -126,8 +125,8 @@ sources.rendererClass = class{
     this.ctx.textBaseline="middle";
     this.ctx.globalAlpha=1-squash;
     this.ctx.fillStyle="hsl(49deg,87%,"+M.max(100-(animTimer**.5)*80,50)+"%)";
-    let timeShow=M.ceil((game.timeStart-Date.now())/1000).toString();
-    if(timeShow=="0"){timeShow="GO!"}
+    let timeShow=M.ceil((game.timeStart-Date.now())/1000);
+    timeShow=sources.languageText["startCountdown"][timeShow];
     this.ctx.fillText(timeShow,300,this.canvas.height/2);
     this.ctx.globalAlpha=1;
     this.ctx.textBaseline="alphabetic";

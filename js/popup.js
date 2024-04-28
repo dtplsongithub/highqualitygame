@@ -2,7 +2,7 @@ sources.popupClass = class{
   constructor(title,render,onclose,width,height,interfaceElement,buttons){
     [this.title,this.width,this.height,this.contentRender,this.onclose,this.interface,this.buttons]=[title,width,height,render,onclose,interfaceElement,buttons];
     this.toRender=false;
-    this.closeButton=new sources.buttonClass("Close",1152/2+this.width/2-100,864/2+this.height/2-35,100,35, "popup");
+    this.closeButton=new sources.buttonClass(sources.languageText["popupElementClose"],1152/2+this.width/2-100,864/2+this.height/2-35,100,35, "popup");
     this.closeButton.setClickEvent(()=>{this.close();this.onclose();});
   }
   render(ctx,game){

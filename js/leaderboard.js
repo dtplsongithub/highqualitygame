@@ -43,7 +43,7 @@ sources.leaderboardClass = class{
   }
   getPlaceRepresentation(idx){
     idx++;
-    return idx.toString(10)+["th","st","nd","rd","th","th","th","th","th","th"][M.floor(idx/10)%10==1?0:(idx%10)];
+    return idx.toString(10)+sources.languageText["placement"][M.floor(idx/10)%10==1?0:(idx%10)];
   }
   timeRepresentation(ms){
     let tm=[ms/60/1000,ms/1000%60,ms/10%100].map((a)=>M.floor(a)).map((a)=>a.toString().padStart(2,"0"));
@@ -77,7 +77,7 @@ sources.leaderboardClass = class{
       ctx.fillText(player.color,710+player.x,50+player.y);
       ctx.font="16px Arial";
       ctx.fillText(player.obj.y+" cm",710+player.x,70+player.y);
-      ctx.fillText((player.obj.eliminated?this.timeRepresentation(player.obj.elimTime-game.timeStart):"leg "+player.obj.currentLeg),710+player.x,90+player.y);
+      ctx.fillText((player.obj.eliminated?this.timeRepresentation(player.obj.elimTime-game.timeStart):sources.languageText["leg"].replace("%a",player.obj.currentLeg)),710+player.x,90+player.y);
 
       if(player.obj.hasPowerup){
         sources.drawImageWithRatio(images["images/"+["booster","teleporter","freezer","freeze-bullet","black-hole"][player.obj.currentPowerup-1]+".svg"],ctx,610+player.x,60+player.y,50,50)
@@ -90,8 +90,8 @@ sources.leaderboardClass = class{
     if(this.getSortedPlayers()[this.findHostIdx()].eliminated){
       ctx.font="24px Arial";
       ctx.fillStyle="#000";
-      ctx.fillText(`you got eliminated at ${this.getPlaceRepresentation(this.findHostIdx())} place`,ctx.canvas.width-20,ctx.canvas.height-50);
-      ctx.fillText(`currently spectating ${this.getSortedPlayers()[0].color}`,ctx.canvas.width-20,ctx.canvas.height-20);
+      ctx.fillText(sources.languageText["spectatorEliminated"].replace("%a",this.getPlaceRepresentation(this.findHostIdx())),ctx.canvas.width-20,ctx.canvas.height-50);
+      ctx.fillText(sources.languageText["currentlySpectating"].replace("%a",this.getSortedPlayers()[0].color),ctx.canvas.width-20,ctx.canvas.height-20);
     } else {
       ctx.font="24px Arial";
       ctx.fillStyle="#000";
@@ -122,14 +122,14 @@ sources.leaderboardClass = class{
 
     if(game.playerList.currentList[0].hasPowerup){
       ctx.font="italic 48px Arial";
-      ctx.fillText(["booster","teleporter","freezer","freeze bullet","black hole"][game.playerList.currentList[0].currentPowerup-1],20,40);
+      ctx.fillText(sources.languageText["powerups"][game.playerList.currentList[0].currentPowerup-1],20,40);
       sources.drawImageWithRatio(images["images/"+["booster","teleporter","freezer","freeze-bullet","black-hole"][game.playerList.currentList[0].currentPowerup-1]+".svg"],ctx,20,60,70,70)
     }
   }
   renderPopup(ctx,lost,game){
     ctx.font="32px Arial";
     ctx.textAlign="center";
-    ctx.fillText((`you got eliminated at ${this.getPlaceRepresentation(this.findHostIdx())} place. `).repeat(lost)+"the game took "+this.timeRepresentation(game.gameTime-game.timeStart),ctx.canvas.width/2,180);
+    ctx.fillText(sources.languageText["popupGameEliminated"].replace("%a",this.getPlaceRepresentation(this.findHostIdx())).repeat(lost)+sources.languageText["popupGameTime"].replace("%a",this.timeRepresentation(game.gameTime-game.timeStart)),ctx.canvas.width/2,170);
     ctx.textAlign="left";
     let players = this.getSortedPlayers();
     for(let i=0;i<3;i++){
@@ -140,7 +140,7 @@ sources.leaderboardClass = class{
       ctx.fillText(player.color,180,520+i*80);
       ctx.font="24px Arial";
       ctx.fillText((player.y+0).toFixed(1)+" cm",180,550+i*80);
-      ctx.fillText("leg "+player.currentLeg+(", "+this.timeRepresentation(player.elimTime-game.timeStart)).repeat(player.eliminated),180,570+i*80);
+      ctx.fillText(sources.languageText["leg"].replace("%a",player.currentLeg)+(", "+this.timeRepresentation(player.elimTime-game.timeStart)).repeat(player.eliminated),180,570+i*80);
     }
     for(let i=0;i<players.length-3;i++){
       let player = players[i+3];

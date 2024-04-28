@@ -88,14 +88,14 @@ sources.powerupClass=class{
         ctx.font="48px Arial";
         ctx.textAlign="center";
         let shake=6-this.expire/60;shake=(shake**2)/8;
-        ctx.fillText("boosting for "+(this.expire/60).toFixed(2)+" seconds",300+(M.random()-0.5)*shake,780+(M.random()-0.5)*shake);
+        ctx.fillText(sources.languageText["boostPowerupStatus"].replace("%a",(this.expire/60).toFixed(2)),300+(M.random()-0.5)*shake,780+(M.random()-0.5)*shake);
         ctx.textAlign="left";
         break;
       case 3:
         ctx.fillStyle="#000";
         ctx.font="24px Arial";
         ctx.textAlign="center";
-        ctx.fillText(`player is being freezed for ${(this.expire/60).toFixed(2)} seconds`,300,780);
+        ctx.fillText(sources.languageText["freezePowerupStatus"].replace("%a",(this.expire/60).toFixed(2)),300,780);
         ctx.textAlign="left";
         break;
       case 4:
