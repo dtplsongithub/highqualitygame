@@ -48,5 +48,8 @@
   "eventPlayerFreeze":"%b a fait geler %a!",
   "eventPlayerFreezeBullet":"%a a lancé une gèle-balle! faites attention!",
   "eventPlayerEliminated":"%a a été éliminé au niveau %b",
-  "introStartText":"créé avec le travail énorme de..."
+  "introStartText":"créé avec le travail énorme de...",
+  "settingsSoundGroup":"Son",
+  "settingsSoundSFXVolume":"Volume des effets sonores",
+  "settingsSoundBGMVolume":"Volume de la musique"
 }

@@ -48,5 +48,8 @@
   "eventPlayerFreeze":"%a has been freezed by %b!",
   "eventPlayerFreezeBullet":"%a has launched a freeze bullet!",
   "eventPlayerEliminated":"%a has been eliminated at leg %b",
-  "introStartText":"made by lots of work from..."
+  "introStartText":"made by lots of work from...",
+  "settingsSoundGroup":"Sound",
+  "settingsSoundSFXVolume":"Sound volume",
+  "settingsSoundBGMVolume":"Music volume"
 }

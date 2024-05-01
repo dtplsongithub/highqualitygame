@@ -76,5 +76,5 @@ bugs
 could not find any ¯\_(ツ)_/¯
 
 v - complete
-? - partially complete
+? - partially complete/in progress
 - - incomplete

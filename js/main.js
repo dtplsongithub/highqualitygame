@@ -1,7 +1,8 @@
 function startEngine(){
+  window.game = new sources.gameClass();
+  game.settings.initSoundVolumes(sfxManager,bgmManager);
   sfxManager.playAudio("sound/sfxIntro.mp3");
   bgmManager.fadeTo(4000,"sound/bgmTitle.mp3")
-  window.game = new sources.gameClass();
   setInterval(()=>{window.game.update();window.renderer.notifications.update();},1000/60);
   window.renderer = new sources.rendererClass(q("#logs"),1152,864,onError);
   window.renderer.render(window.game);

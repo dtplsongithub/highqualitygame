@@ -32,6 +32,16 @@ sources.settingsClass=class{
     } else {
       this.aiDifficulty=parseFloat(localStorage["aiDifficulty"]);
     }
+    if(!localStorage["soundVolume"]){
+      this.soundVolume=1;
+    } else {
+      this.soundVolume=parseFloat(localStorage["soundVolume"]);
+    }
+    if(!localStorage["musicVolume"]){
+      this.musicVolume=1;
+    } else {
+      this.musicVolume=parseFloat(localStorage["musicVolume"]);
+    }
   }
   setKeys(keySettings){
     if(keySettings) this.keySettings=keySettings;
@@ -40,6 +50,30 @@ sources.settingsClass=class{
   setAIDifficulty(aiDifficulty){
     if(aiDifficulty) this.aiDifficulty=aiDifficulty;
     localStorage["aiDifficulty"]=aiDifficulty;
+  }
+  setSoundVolume(soundVolume){
+    if(soundVolume){
+      if(soundVolume<0.08){soundVolume=0;}
+      if(soundVolume>1-0.08){soundVolume=1;}
+      this.soundVolume=soundVolume;
+    }
+    localStorage["soundVolume"]=soundVolume;
+    sfxManager.volume=this.soundVolume;
+  }
+  setMusicVolume(musicVolume){
+    if(musicVolume){
+      if(musicVolume<0.08){musicVolume=0;}
+      if(musicVolume>1-0.08){musicVolume=1;}
+      this.musicVolume=musicVolume;
+    }
+    localStorage["musicVolume"]=musicVolume;
+    bgmManager.volume=this.musicVolume;
+    bgmManager.volumeUpdate();
+  }
+  initSoundVolumes(sfxManager,bgmManager){
+    sfxManager.volume=this.soundVolume;
+    bgmManager.volume=this.musicVolume;
+    bgmManager.volumeUpdate();
   }
   getPopup(interfaceElement){
     let thisClass=this;
@@ -107,6 +141,12 @@ sources.settingsClass=class{
       ctx.fillText(sources.languageText["settingsSingleplayerGroup"],100,600);
       ctx.font="24px Arial";
       ctx.fillText(sources.languageText["settingsSingleplayerPlayerDifficulty"],100,630);
+      ctx.font="bold 32px Arial";
+      ctx.fillStyle="#fff";
+      ctx.fillText(sources.languageText["settingsSoundGroup"],100,680);
+      ctx.font="24px Arial";
+      ctx.fillText(sources.languageText["settingsSoundSFXVolume"],100,710);
+      ctx.fillText(sources.languageText["settingsSoundBGMVolume"],100,740);
     },()=>{
       console.log(sources.languageText["langPackMeta"]["languageCode"],localStorage["language"])
       if(sources.languageText["langPackMeta"]["languageCode"]!=localStorage["language"]){
@@ -121,7 +161,9 @@ sources.settingsClass=class{
       keySetButton(sources.languageText["settingsKey"],"powerup",460,290,100,25),
       swapButton(360,338,-1,languagePacks,sources.languageText,(a)=>{sources.languageText=a}),
       swapButton(400,338,1,languagePacks,sources.languageText,(a)=>{sources.languageText=a}),
-      new sources.sliderClass(400,610,200,20,0,1,this.aiDifficulty,"popup",(a)=>{thisClass.setAIDifficulty(a)})
+      new sources.sliderClass(400,610,200,20,0,1,this.aiDifficulty,"popup",(a)=>{thisClass.setAIDifficulty(a)}),
+      new sources.sliderClass(400,690,200,20,0,1,this.soundVolume,"popup",(a)=>{thisClass.setSoundVolume(a)}),
+      new sources.sliderClass(400,720,200,20,0,1,this.musicVolume,"popup",(a)=>{thisClass.setMusicVolume(a)})
     ])
   }
 }

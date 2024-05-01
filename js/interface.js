@@ -31,6 +31,7 @@ sources.buttonClass = class{
     if(clicking&&this.isButtonTouching(cursorX,cursorY)&&!this.currentlyClicking){
       this.currentlyClicking=true;
       if(this.hasOnclick)this.onclick();
+      window.sfxManager.playAudio("sound/sfxClick.wav");
     }
     if(this.currentlyClicking&&!clicking){
       this.currentlyClicking=false;

@@ -36,7 +36,6 @@ sources.gameClass = class{
       this.playerList.update(horizontal,0,this.platformList,sources.keyboard.includes(keys.powerup),this);
       this.powerupList.update();
       if(this.playerList.currentList.filter((a)=>!a.eliminated).length==1){
-        window.sfxManager.playAudio("sound/sfxGameover.mp3");
         this.gameTime=Date.now();
         this.popupTrigger(this.playerList.currentList.filter((a)=>a.isHost)[0].eliminated?"lost":"win");
         this.menu="popup";
