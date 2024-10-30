@@ -31,9 +31,13 @@ sources.leaderboardClass = class{
   smoothPlayerObject(){
     let new_=this.getPlayerObject();
     let old=this.currentObject;
-    for(let i in old){
-      old[i].x+=(new_[i].x-old[i].x)/5;
-      old[i].y+=(new_[i].y-old[i].y)/5;
+    for(let i in new_){
+      if(!old[i]){old[i]=new_[i]}
+      if(!new_[i]){delete old[i];}
+      else{
+        old[i].x+=(new_[i].x-old[i].x)/5;
+        old[i].y+=(new_[i].y-old[i].y)/5;
+      }
     };
     return old;
   }
@@ -74,56 +78,63 @@ sources.leaderboardClass = class{
         ctx.fillRect(630+player.x,30+player.y,60,60);
       }
       ctx.font="24px Arial";
-      ctx.fillText(player.color,710+player.x,50+player.y);
+      ctx.fillText(player.obj.name,710+player.x,50+player.y);
       ctx.font="16px Arial";
-      ctx.fillText(player.obj.y+" cm",710+player.x,70+player.y);
-      ctx.fillText((player.obj.eliminated?this.timeRepresentation(player.obj.elimTime-game.timeStart):sources.languageText["leg"].replace("%a",player.obj.currentLeg)),710+player.x,90+player.y);
+      if(game.menu=="game"){
+        ctx.fillText(player.obj.y+" cm",710+player.x,70+player.y);
+        ctx.fillText((player.obj.eliminated?this.timeRepresentation(player.obj.elimTime-game.timeStart):sources.languageText["leg"].replace("%a",player.obj.currentLeg)),710+player.x,90+player.y);
+      } else {
+        ctx.fillText(player.obj.color,710+player.x,70+player.y);
+      }
 
       if(player.obj.hasPowerup){
         sources.drawImageWithRatio(images["images/"+["booster","teleporter","freezer","freeze-bullet","black-hole"][player.obj.currentPowerup-1]+".svg"],ctx,610+player.x,60+player.y,50,50)
       }
     };
 
-    ctx.textAlign="right";
-    let loss=this.findHostIdx()/(this.getSortedPlayers().filter((a)=>!a.eliminated).length-1);
-    loss=loss**2;// square so it only does the effect when you're really bad
-    if(this.getSortedPlayers()[this.findHostIdx()].eliminated){
-      ctx.font="24px Arial";
-      ctx.fillStyle="#000";
-      ctx.fillText(sources.languageText["spectatorEliminated"].replace("%a",this.getPlaceRepresentation(this.findHostIdx())),ctx.canvas.width-20,ctx.canvas.height-50);
-      ctx.fillText(sources.languageText["currentlySpectating"].replace("%a",this.getSortedPlayers()[0].color),ctx.canvas.width-20,ctx.canvas.height-20);
-    } else {
-      ctx.font="24px Arial";
-      ctx.fillStyle="#000";
-      ctx.fillText("/"+this.getSortedPlayers().filter((a)=>!a.eliminated).length,ctx.canvas.width-50,ctx.canvas.height-20);
-
-      
-      let trophyColors=["#aa0","#aaa","#a22"]
-      ctx.font="italic bold ".repeat(this.findHostIdx()<3)+"64px Arial";
-      if(this.findHostIdx()<3){ctx.fillStyle=trophyColors[this.findHostIdx()];}
-      else{ ctx.fillStyle="rgb("+M.floor(loss*255)+",0,0)"; }
-      ctx.fillText(this.getPlaceRepresentation(this.findHostIdx()),ctx.canvas.width-50+M.random()*loss*15,ctx.canvas.height-50+M.random()*loss*15);
-      if(this.findHostIdx()<3){
-        // make the text shiny by adding a tilted transparent rectangle
-        ctx.fillStyle="#fff8";
-        ctx.beginPath();
-        ctx.moveTo(ctx.canvas.width-90,ctx.canvas.height-100);
-        ctx.lineTo(ctx.canvas.width-40,ctx.canvas.height-100);
-        ctx.lineTo(ctx.canvas.width-70,ctx.canvas.height-50);
-        ctx.lineTo(ctx.canvas.width-120,ctx.canvas.height-50);
-        ctx.fill();
+    if(game.menu=="game"){
+    
+      ctx.textAlign="right";
+      let loss=this.findHostIdx()/(this.getSortedPlayers().filter((a)=>!a.eliminated).length-1);
+      loss=loss**2;// square so it only does the effect when you're really bad
+      if(this.findHostIdx()!=-1&&this.getSortedPlayers()[this.findHostIdx()].eliminated){
+        ctx.font="24px Arial";
+        ctx.fillStyle="#000";
+        ctx.fillText(sources.languageText["spectatorEliminated"].replace("%a",this.getPlaceRepresentation(this.findHostIdx())),ctx.canvas.width-20,ctx.canvas.height-50);
+        ctx.fillText(sources.languageText["currentlySpectating"].replace("%a",this.getSortedPlayers()[0].color),ctx.canvas.width-20,ctx.canvas.height-20);
+      } else {
+        ctx.font="24px Arial";
+        ctx.fillStyle="#000";
+        ctx.fillText("/"+this.getSortedPlayers().filter((a)=>!a.eliminated).length,ctx.canvas.width-50,ctx.canvas.height-20);
+  
+        
+        let trophyColors=["#aa0","#aaa","#a22"]
+        ctx.font="italic bold ".repeat(this.findHostIdx()<3)+"64px Arial";
+        if(this.findHostIdx()<3){ctx.fillStyle=trophyColors[this.findHostIdx()];}
+        else{ ctx.fillStyle="rgb("+M.floor(loss*255)+",0,0)"; }
+        ctx.fillText(this.getPlaceRepresentation(this.findHostIdx()),ctx.canvas.width-50+M.random()*loss*15,ctx.canvas.height-50+M.random()*loss*15);
+        if(this.findHostIdx()<3){
+          // make the text shiny by adding a tilted transparent rectangle
+          ctx.fillStyle="#fff8";
+          ctx.beginPath();
+          ctx.moveTo(ctx.canvas.width-90,ctx.canvas.height-100);
+          ctx.lineTo(ctx.canvas.width-40,ctx.canvas.height-100);
+          ctx.lineTo(ctx.canvas.width-70,ctx.canvas.height-50);
+          ctx.lineTo(ctx.canvas.width-120,ctx.canvas.height-50);
+          ctx.fill();
+        }
       }
-    }
-
-    ctx.font="24px Arial";
-    ctx.textAlign="left";
-    ctx.fillStyle="#000";
-    ctx.fillText(this.timeRepresentation(Date.now()-game.timeStart),620,ctx.canvas.height-20);
-
-    if(game.playerList.currentList[0].hasPowerup){
-      ctx.font="italic 48px Arial";
-      ctx.fillText(sources.languageText["powerups"][game.playerList.currentList[0].currentPowerup-1],20,40);
-      sources.drawImageWithRatio(images["images/"+["booster","teleporter","freezer","freeze-bullet","black-hole"][game.playerList.currentList[0].currentPowerup-1]+".svg"],ctx,20,60,70,70)
+  
+      ctx.font="24px Arial";
+      ctx.textAlign="left";
+      ctx.fillStyle="#000";
+      ctx.fillText(this.timeRepresentation(Date.now()-game.timeStart),620,ctx.canvas.height-20);
+  
+      if(game.playerList.currentList[0].hasPowerup){
+        ctx.font="italic 48px Arial";
+        ctx.fillText(sources.languageText["powerups"][game.playerList.currentList[0].currentPowerup-1],20,40);
+        sources.drawImageWithRatio(images["images/"+["booster","teleporter","freezer","freeze-bullet","black-hole"][game.playerList.currentList[0].currentPowerup-1]+".svg"],ctx,20,60,70,70)
+      }
     }
   }
   renderPopup(ctx,lost,game){
@@ -132,18 +143,20 @@ sources.leaderboardClass = class{
     ctx.fillText(sources.languageText["popupGameEliminated"].replace("%a",this.getPlaceRepresentation(this.findHostIdx())).repeat(lost)+sources.languageText["popupGameTime"].replace("%a",this.timeRepresentation(game.gameTime-game.timeStart)),ctx.canvas.width/2,170,970);
     ctx.textAlign="left";
     let players = this.getSortedPlayers();
-    for(let i=0;i<3;i++){
+    for(let i=0;i<Math.min(players.length,3);i++){
       let player = players[i];
+      if(!player){continue;}
       ctx.fillStyle=player.color;
       ctx.fillRect(110,500+i*80,60,60);
       ctx.font="32px Arial";
-      ctx.fillText(player.color,180,520+i*80);
+      ctx.fillText(player.name,180,520+i*80);
       ctx.font="24px Arial";
       ctx.fillText((player.y+0).toFixed(1)+" cm",180,550+i*80);
       ctx.fillText(sources.languageText["leg"].replace("%a",player.currentLeg)+(", "+this.timeRepresentation(player.elimTime-game.timeStart)).repeat(player.eliminated),180,570+i*80);
     }
     for(let i=0;i<players.length-3;i++){
       let player = players[i+3];
+      if(!player){continue;}
       ctx.fillStyle=player.color;
       ctx.fillRect(500+M.floor(i/10)*200,190+(i%10)*60,40,40);
       ctx.fillText((player.y+0).toFixed(1)+" cm",550+M.floor(i/10)*200,210+(i%10)*60);

@@ -9,9 +9,11 @@ sources.rendererClass = class{
     this.cameraY=0;
     this.interface = new sources.interfaceClass(this.canvas);
     this.popupList = {
-      "win":new sources.popupClass(sources.languageText["popupWinTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,false,game);},()=>{game.menu="title";this.bgmManager.fadeTo(1000,"sound/bgmTitle.mp3")},1000,700,this.interface,[]),
-      "lost":new sources.popupClass(sources.languageText["popupLostTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,true,game);},()=>{game.menu="title";this.bgmManager.fadeTo(1000,"sound/bgmTitle.mp3")},1000,700,this.interface,[]),
-      "settings":game.settings.getPopup(this.interface)
+      "win":new sources.popupClass(sources.languageText["popupWinTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,false,game);},()=>{if(game.online){game.menu="onlineLobby"}else{game.menu="title"};this.bgmManager.fadeTo(1000,"sound/bgmTitle.mp3")},1000,700,this.interface,[]),
+      "lost":new sources.popupClass(sources.languageText["popupLostTitle"],(ctx,game)=>{game.leaderboard.renderPopup(ctx,true,game);},()=>{if(game.online){game.menu="onlineLobby"}else{game.menu="title"};this.bgmManager.fadeTo(1000,"sound/bgmTitle.mp3")},1000,700,this.interface,[]),
+      "settings":game.settings.getPopup(this.interface),
+      "multiplayer":game.multiplayer.getPopup(this.interface),
+      "onlineRules":game.multiplayer.getRulesPopup(this.interface)
     };
     this.notifications = new sources.notificationManageClass();
     this.onerror=onerror;
@@ -54,6 +56,16 @@ sources.rendererClass = class{
       this.ctx.fillRect(sld.x+val*sld.width-sld.height/2,sld.y,sld.height,sld.height);
     }
   }
+  renderTextInput(txi){
+    if(txi.guiMenu==game.menu||txi.guiMenu=="popup"){
+      this.ctx.fillStyle="#444";
+      this.ctx.fillRect(txi.x,txi.y,txi.width,txi.height);
+      this.ctx.fillStyle="#fff";
+      this.ctx.textBaseline="middle";
+      this.ctx.fillText(txi.value,txi.x+10,txi.y+txi.height/2)
+      this.ctx.textBaseline="alphabetic";
+    }
+  }
   renderInterface(){
     let btns=this.interface.buttonList;
     for(let i=0;i<btns.length;i++){
@@ -64,6 +76,8 @@ sources.rendererClass = class{
         }
       } else if(btn instanceof sources.sliderClass){
         this.renderSlider(btn);
+      } else if(btn instanceof sources.textInputClass){
+        this.renderTextInput(btn);
       }
     }
   }
@@ -156,7 +170,7 @@ sources.rendererClass = class{
     if(game.playerList.currentList[0].eliminated){
       this.cameraY+=(game.playerList.currentList.filter((a)=>!a.eliminated).map((a)=>a.y).sort((a,b)=>b-a)[0]-this.cameraY)/30
     } else {
-      this.cameraY+=(game.playerList.currentList[0].y-this.cameraY)/30;
+      this.cameraY+=(game.playerList.currentList.find(a=>a.isHost).y-this.cameraY)/30;
     }
     this.renderBackground();
     this.renderPlayers(game)
@@ -185,6 +199,18 @@ sources.rendererClass = class{
       this.ctx.fillText(people[i],100,this.canvas.height/3+40*(i+1)+(M.min(time-(1+i/2),0)**2)*1000+M.sin(Date.now()/1000*M.PI+i/1.2))*5;
     }
   }
+  renderOnlineLobby(game){
+    this.renderBackground();
+    game.leaderboard.render(this.ctx,game);
+    const chat=[...game.multiplayer.chatHistory];
+    this.ctx.fillStyle="#000";
+    this.ctx.font="24px Arial";
+    for(let i=0;i<27;i++){
+      if(chat[i]&&chat[i].message){
+        this.ctx.fillText((!chat[i].user?"":chat[i].user.credentials.name+": ")+chat[i].message,10,40+30*(i+(27-chat.length)));
+      }
+    }
+  }
   render(game){
     this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
     try{
@@ -192,8 +218,9 @@ sources.rendererClass = class{
       if(game.menu!="game") this.cameraY=0;
       if(game.menu=="title") this.renderTitlescreen();
       if(game.menu=="game") this.renderGame(game);
-      if(game.menu=="popup") this.renderBackground();
+      if(game.menu=="popup"||game.menu=="onlineConnecting") this.renderBackground();
       if(game.menu=="intro") this.renderIntro(game);
+      if(game.menu=="onlineLobby") this.renderOnlineLobby(game);
       this.renderPopups(game);
       this.renderInterface();
       this.notifications.render(this.ctx);

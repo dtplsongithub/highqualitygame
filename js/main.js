@@ -10,12 +10,21 @@ function startEngine(){
   playButton.setClickEvent(()=>{window.game.start();})
   let settingsButton=new sources.buttonClass(sources.languageText["settingsButton"],526,437,100,35, "title");
   settingsButton.setClickEvent(()=>{window.game.menu="popup";window.renderer.popupList["settings"].open();})
+  let multiplayerButton=new sources.buttonClass("multiplayer",526,474,100,35, "title");
+  multiplayerButton.setClickEvent(()=>{window.game.menu="popup";window.renderer.popupList["multiplayer"].open();})
+  let onlineChatInput=new sources.textInputClass(0,864-35,600,35,"onlineLobby","");
+  onlineChatInput.setChangeEvent((msg)=>{window.game.multiplayer.sendMessage(msg);});
+  let onlineStartGameBtn=new sources.buttonClass("Start game",600,864-35,100,35,"onlineLobby");
+  onlineStartGameBtn.setClickEvent(()=>{window.game.multiplayer.startGame();});
   let powerupButton=new sources.buttonClass(sources.languageText["usePowerup"],120,70,140,35, "game");
   powerupButton.setClickEvent(()=>{window.game.playerList.currentList.filter((a)=>a.isHost)[0].usePowerup();});
-  powerupButton.setHideCheckFunc(()=>{if(!window.game.playerList.currentList){return;};return !window.game.playerList.currentList.filter((a)=>a.isHost)[0].hasPowerup});
+  powerupButton.setHideCheckFunc(()=>{if((!window.game.playerList.currentList)||(!window.game.playerList.currentList.filter((a)=>a.isHost)[0])){return;};return !window.game.playerList.currentList.filter((a)=>a.isHost)[0].hasPowerup});
   window.renderer.interface.addButton(playButton);
   window.renderer.interface.addButton(settingsButton);
+  window.renderer.interface.addButton(multiplayerButton);
   window.renderer.interface.addButton(powerupButton);
+  window.renderer.interface.addButton(onlineChatInput);
+  window.renderer.interface.addButton(onlineStartGameBtn);
   window.game.triggerPopupEvent((e)=>{console.log(e);window.renderer.popupList[e].open();});
   window.game.notifyEvent((e)=>{console.log(e);window.renderer.notifications.notify(e);});
   window.game.assignBgmManager(bgmManager);

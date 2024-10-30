@@ -1,5 +1,5 @@
 sources.playerClass = class{
-  constructor(x, y, color, isHost, difficulty) {
+  constructor(x, y, color, isHost, difficulty, name) {
     this.x = x;
     this.y = y;
     this.vx = 0;
@@ -15,16 +15,22 @@ sources.playerClass = class{
     this.bounceVY=25;
     this.ignoreDeathlyPlatforms=false;
     this.freezed=false;
+    this.name=name;
   }
   usePowerup(){
     this.powerupClass.usePowerup(this,this.playerList,this.currentGameElement);
     this.hasPowerup=false;
     this.currentPowerup=0;
   }
-  eliminate(){
+  eliminate(noResend){
+    // this function doesn't get called apparently???
+    //alert("eliminating "+this.onlineId+". resend="+(!noResend)+". online="+game.online);
+    if(game.online&&(!noResend)){
+      game.multiplayer.eliminatePlayer(this.onlineId);
+    }
     this.eliminated=true;
     this.elimTime=Date.now();
-    this.currentGameElement.notifyFunction(sources.languageText["eventPlayerEliminated"].replace("%a",this.color).replace("%b",this.currentLeg));
+    game.notifyFunction(sources.languageText["eventPlayerEliminated"].replace("%a",this.name).replace("%b",this.currentLeg));
     window.sfxManager.playAudio("sound/sfxEliminate.mp3");
   }
   checkSameLeg(leg,list){
@@ -55,6 +61,7 @@ sources.playerClass = class{
     return (platformX-this.x)/2
   }
   update(vx, vy, ai, platformList,list,pwc,usePowerup,game){
+    this.gameElement=game;
     this.currentGameElement=game;
     this.powerupClass=pwc;
     this.playerList=list;
@@ -105,17 +112,20 @@ sources.playerClass = class{
       if(this.x<-300){this.x=-300;}
       if(this.x>300){this.x=300;}
       if(this.y<0||(platformList.touchingPlatform(this)&&this.vy<0&&(!(game.timeStart>Date.now())))){
-        this.aiObjectivePlatform=this.getObjectivePlatformAI(platformList)
+        if(ai)this.aiObjectivePlatform=this.getObjectivePlatformAI(platformList)
         this.vy=this.bounceVY;
       }
       if(this.y<0){this.y=0;}
-      if(this.y>(platformList.currentList.length-4)*120){platformList.addPlatform();}
+      if(this.y>(platformList.currentList.length-4)*120){platformList.addPlatform(game.online,game.multiplayer);}
       // "this.vy<0" to make sure the player is falling.
   
       if(this.currentLeg<M.floor(this.y/3000)){
         if (this.isHost) window.sfxManager.playAudio("sound/sfxLap.mp3");
         this.currentLeg=M.floor(this.y/3000);
         this.checkSameLeg(this.currentLeg,list);
+        if(game.online){
+          game.multiplayer.passedLeg(this.currentLeg);
+        }
       }
 
       if(ai&&this.hasPowerup){

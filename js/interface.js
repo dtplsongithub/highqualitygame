@@ -65,6 +65,60 @@ sources.sliderClass = class{
     }
   }
 }
+sources.textInputClass = class{
+  constructor(x,y,width,height,guiMenu,value,minLength,maxLength) {
+    [this.x, this.y, this.width, this.height, this.guiMenu, this.value, this.minLength, this.maxLength]=[x,y,width,height,guiMenu,value,minLength,maxLength];
+    this.currentlyClicking=false;
+    this.hasOnclick=false;
+    this.hasOnclickend=false;
+    this.hasOnchange=false;
+  }
+  setClickEvent(callback){
+    this.onclick=callback;
+    this.hasOnclick=true;
+  }
+  setClickEndEvent(callback){
+    this.onclickend=callback;
+    this.hasOnclickend=true;
+  }
+  setChangeEvent(callback){
+    this.onchange=callback;
+    this.hasOnchange=true;
+  }
+  setHideCheckFunc(func){
+    this.hideFunc=func;
+  }
+  isButtonTouching(cursorX,cursorY){
+    return isTouching(this.x, this.y, this.width, this.height, cursorX, cursorY, 1, 1);
+  }
+  update(cursorX,cursorY,clicking,callSelf){
+    if (this.guiMenu != game.menu&&this.guiMenu!="popup") return;
+    if(clicking&&this.isButtonTouching(cursorX,cursorY)&&!this.currentlyClicking){
+      this.currentlyClicking=true;
+      if(this.hasOnclick)this.onclick();
+      window.sfxManager.playAudio("sound/sfxClick.wav");
+      q("#inputText").classList.remove("hidden");
+      q("#inputText").innerHTML="Enter text: <input type=\"text\"></input><button>Submit</button><button>Cancel</button>";
+      if(this.minLength){q("#inputText input").setAttribute("minlength",this.minLength)}
+      if(this.maxLength){q("#inputText input").setAttribute("maxlength",this.maxLength)}
+      q("#inputText input").value=this.value;
+      q("#inputText button").addEventListener("click",()=>{
+        q("#inputText").classList.add("hidden");
+        this.value=q("#inputText input").value;
+        if(this.hasOnchange)this.onchange(this.value);
+        callSelf.clicking=false;
+      })
+      Q("#inputText button")[1].addEventListener("click",()=>{
+        q("#inputText").classList.add("hidden");
+        callSelf.clicking=false;
+      })
+    }
+    if(this.currentlyClicking&&!clicking){
+      this.currentlyClicking=false;
+      if(this.hasOnclickend)this.onclickend();
+    }
+  }
+}
 sources.interfaceClass = class{
   constructor(cnv){
     this.buttonList=[];
@@ -90,7 +144,7 @@ sources.interfaceClass = class{
   }
   update(){
     for(let i=0;i<this.buttonList.length;i++){
-      this.buttonList[i].update(this.cursorX,this.cursorY,this.clicking);
+      this.buttonList[i].update(this.cursorX,this.cursorY,this.clicking,this);
     }
   }
 }

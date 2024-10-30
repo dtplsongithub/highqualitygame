@@ -4,6 +4,8 @@ sources.gameClass = class{
     //this.keyboard = new sources.keyboardClass();
     this.settings = new sources.settingsClass();
     this.platformList = new sources.platformList();
+    this.multiplayer = new sources.multiplayerClass(this);
+    this.leaderboard = new sources.leaderboardClass({"currentList":[]});
     this.menu="intro";
     setTimeout(()=>{this.menu="title"},4000)
     this.timeStart=Date.now();
@@ -17,15 +19,16 @@ sources.gameClass = class{
   assignBgmManager(bgmManager){
     this.bgmManager=bgmManager;
   }
-  start(){
+  start(isOnline){
     this.menu="game";
+    this.online=!!isOnline;
     this.powerupList = new sources.powerupManageClass(this);
-    this.playerList.generateRandom(this.settings.aiDifficulty);
+    if(!isOnline)this.playerList.generateRandom(this.settings.aiDifficulty);
     this.playerList.assignPowerupClass(this.powerupList);
     this.platformList.makeRandom();
     this.leaderboard = new sources.leaderboardClass(this.playerList);
     this.timeStart=Date.now()+3000;
-    this.bgmManager.fadeTo(1000,"sound/bgmGame.mp3") // if only there was a bgmGame.mp3
+    this.bgmManager.fadeTo(1000,"sound/bgmGame.mp3")
   }
   update(){
     if(this.menu=="game"){

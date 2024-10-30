@@ -37,19 +37,8 @@ v player arrows
 v sound effects
 v background music
 v spectator mode
-- text showing what happened, like notifications
+v text showing what happened, like notifications
 v timer counting from 3 to 1 before game starts
-
-- MULTIPLAYER:
-  - node.js socket.io server
-  - connect client to server
-  - share player data
-  - chatting
-  - gameplay:
-    - write names instead of colors
-    - share platform data
-    - share player position data
-    - share powerup data
 
 other game related stuff
 
@@ -73,8 +62,12 @@ v use language json files for translation
 
 bugs
 
-could not find any ¯\_(ツ)_/¯
+- you can input transparency when joining a multiplayer game
+- sometimes the button to play the game doesnt appear even tho it should
+? player list/ leaderboard does not like it when someone leaves
+? only you move when online
+- winning screen when online only shows the color of the player
 
-v - complete
+v - complete/fixed
 ? - partially complete/in progress
-- - incomplete
+- - nonexistent/not fixed

@@ -2,17 +2,18 @@ function getDistance(x0,y0,x1,y1){
   return Math.sqrt(Math.pow(x1-x0,2)+Math.pow(y1-y0,2))
 }
 function getAngle(x0,y0,x1,y1){
-  return M.atan((y1-y0)/(x1-x0))/M.PI*180;
+  return (360+M.atan((x1-x0)/(y1-y0))*(180/M.PI)+180*(y1-y0<0))%360;
 }
 sources.powerupClass=class{
   constructor(pwlist,player,playerList,type,game,removeFunction){
     [this.player,this.playerList,this.type,this.remove,this.pwlist,this.gameElement]=[player,playerList,type,removeFunction,pwlist,game];
+    this.onlineFromHost=true;
     console.log(this.playerList);
   }
   boosterUpdate(){
     if(!this.expire){
       this.expire=60*6;
-      this.gameElement.notifyFunction(sources.languageText["eventPlayerBoost"].replace("%a",this.player.color));
+      this.gameElement.notifyFunction(sources.languageText["eventPlayerBoost"].replace("%a",this.player.name));
       window.sfxManager.playAudio("sound/sfxBoost.mp3");
     }
     this.expire--;
@@ -25,10 +26,10 @@ sources.powerupClass=class{
     }
   }
   teleporterUpdate(){
-    this.gameElement.notifyFunction(sources.languageText["eventPlayerTeleporter"].replace("%a",this.player.color))
+    this.gameElement.notifyFunction(sources.languageText["eventPlayerTeleporter"].replace("%a",this.player.name))
     const list = [...this.playerList];
     let most = list.sort((a,b)=>b.y-a.y)[0].y;
-    this.player.y=most+100;
+    this.player.y=most+100-500*M.random();
     this.remove();
   }
   freezerUpdate(){
@@ -40,13 +41,15 @@ sources.powerupClass=class{
       if(this.freezedPlayer==this.player){
         this.freezedPlayer=sorted[1];
       }
-      this.gameElement.notifyFunction(sources.languageText["eventPlayerFreeze"].replace("%a",this.freezedPlayer.color).replace("%b",this.player.color))
+      this.gameElement.notifyFunction(sources.languageText["eventPlayerFreeze"].replace("%a",this.freezedPlayer.name).replace("%b",this.player.name))
     }
     this.freezedPlayer.freezed=true;
     this.freezedPlayer.freezeTime=this.expire;
     this.expire--;
+    if(this.gameElement.online)this.gameElement.multiplayer.freezeUpdate(this.freezedPlayer.onlineId,this.freezedPlayer.freezeTime);
     if(this.expire==0){
       this.freezedPlayer.freezed=false;
+      if(this.gameElement.online)this.gameElement.multiplayer.unfreeze(this.freezedPlayer.onlineId);
       this.remove();
     }
   }
@@ -56,9 +59,22 @@ sources.powerupClass=class{
     if(!this.speed){this.speed=1;}
     if(!this.rot){this.rot=0;}
     if(!this.expire){
+      console.log(this.expire);
       this.expire=60*10;
-      this.gameElement.notifyFunction(sources.languageText["eventPlayerFreezeBullet"].replace("%a",this.player.color))
+      this.onlineId=[...Array(8).keys()].map(a=>M.floor(M.random()*16).toString(16)).join("");
+      this.gameElement.notifyFunction(sources.languageText["eventPlayerFreezeBullet"].replace("%a",this.player.name))
     }
+
+    this.expire--;
+    if(this.expire==0){
+      this.remove();
+      if(this.onlineFromHost&&this.gameElement.online){
+        this.gameElement.multiplayer.sendFreezeBulletBreak(this);
+      }
+    } else if(this.gameElement.online) {
+      if(this.onlineFromHost)this.gameElement.multiplayer.sendFreezeBulletUpdate(this);
+    }
+    
     let closestPlayer=this.playerList.filter((a)=>a!=this.player).sort((a,b)=>getDistance(a.x,a.y,this.x,this.y)-getDistance(b.x,b.y,this.x,this.y))[0];
     let playerAngle=getAngle(this.x,this.y,closestPlayer.x,closestPlayer.y);
     playerAngle+=0; // try adjusting that so it actually goes to a player
@@ -72,14 +88,15 @@ sources.powerupClass=class{
       let player=this.playerList[i];
       if(player==this.player){continue;}
       if(sources.touchingFunction(this.x,this.y,50,50,player.x,player.y,40,40)){
+        if(this.onlineFromHost&&this.gameElement.online){
+          this.gameElement.multiplayer.sendFreezeBulletBreak(this);
+        }
         this.remove();
         this.pwlist.usePowerup({hasPowerup:true,currentPowerup:3},this.playerList);
         this.pwlist.powerupList[this.pwlist.powerupList.length-1].freezedPlayer=player;
+        this.pwlist.powerupList[this.pwlist.powerupList.length-1].gameElement=this.gameElement;
       }
     }
-
-    this.expire--;
-    if(this.expire==0){this.remove();}
   }
   update(){
     switch(this.type){
@@ -129,10 +146,10 @@ sources.powerupManageClass=class{
     if(!player.hasPowerup){throw new Error("tried to use powerup but doesn't have one.");};
     let pw=new sources.powerupClass(this,player,playerList,player.currentPowerup,game,()=>{
       this.powerupList.splice(this.powerupList.indexOf(pw),1);
-    })
+    });
     this.powerupList.push(pw);
   }
   update(){
-    this.powerupList.forEach((a)=>{a.update();});
+    this.powerupList.forEach((a)=>{if(!a.onlineFromHost){return};a.update();});
   }
 }

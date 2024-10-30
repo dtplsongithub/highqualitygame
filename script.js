@@ -42,7 +42,7 @@ let sources={};
 let images={};
 let sound={};
 let languagePacks={};
-let scripts=["js/sound.js","js/notifications.js","js/powerup.js","js/leaderboard.js","js/platforms.js","js/render.js","js/player.js","js/playerList.js","js/keyboard.js","js/settings.js","js/game.js","js/interface.js","js/popup.js","js/main.js"];
+let scripts=["js/sound.js","js/notifications.js","js/powerup.js","js/leaderboard.js","js/platforms.js","js/render.js","js/player.js","js/playerList.js","js/keyboard.js","js/settings.js","js/game.js","js/interface.js","js/popup.js","js/multiplayer.js","js/main.js"];
 function loadScripts(){
   loader.loadMultiple(scripts,"text",false,(loaded)=>{
     let funcs={};
@@ -94,7 +94,7 @@ function loadSound(callback){
   })
 }
 function loadLanguagePacks(callback){
-  loader.loadMultiple(["langData/en_US.json","langData/fr_FR.json"],"json",true,(loaded)=>{
+  loader.loadMultiple(["langData/en_US.json","langData/fr_FR.json", "langData/gt_GT.json"],"json",true,(loaded)=>{
     languagePacks=loaded;
     callback();
   })

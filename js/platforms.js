@@ -24,7 +24,11 @@ sources.platformList = class{
       this.addPlatform();
     }
   }
-  addPlatform(){
+  addPlatform(online,multiplayer){
+    if(online){
+      multiplayer.requestPlatforms();
+      return;
+    }
     let type=0; // normal
     if(M.random()>0.97){
       type=1; // platform kills you
